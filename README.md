@@ -402,24 +402,80 @@
             align-items: center;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
             z-index: 100;
+            width: 300px;
+        }
+
+        .music-info {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            margin-right: 10px;
+        }
+
+        .music-title {
+            font-size: 0.9rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .music-artist {
+            font-size: 0.7rem;
+            opacity: 0.8;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .music-controls {
+            display: flex;
+            align-items: center;
         }
 
         .music-control {
             background: none;
             border: none;
             color: white;
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             cursor: pointer;
-            margin: 0 10px;
+            margin: 0 5px;
+            transition: transform 0.2s ease;
         }
 
-        .music-title {
-            font-size: 0.9rem;
-            margin-right: 10px;
-            max-width: 150px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+        .music-control:hover {
+            transform: scale(1.2);
+        }
+
+        .progress-container {
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 2px;
+            margin-top: 8px;
+            cursor: pointer;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: #ff4458;
+            border-radius: 2px;
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+
+        .volume-container {
+            display: flex;
+            align-items: center;
+            margin-left: 10px;
+        }
+
+        .volume-slider {
+            width: 50px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 2px;
+            outline: none;
+            cursor: pointer;
         }
 
         footer {
@@ -454,6 +510,25 @@
             line-height: 1.8;
         }
 
+        .notification {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            padding: 15px 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .notification.show {
+            opacity: 1;
+        }
+
         @media (max-width: 768px) {
             .header-title {
                 font-size: 2.5rem;
@@ -482,6 +557,22 @@
             
             .reasons {
                 grid-template-columns: 1fr;
+            }
+            
+            .music-player {
+                width: 250px;
+                flex-direction: column;
+                padding: 10px;
+            }
+            
+            .music-info {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+            
+            .volume-container {
+                margin-left: 0;
+                margin-top: 10px;
             }
         }
     </style>
@@ -626,17 +717,177 @@
 
         <footer>
             <p>Made with <span class="footer-heart"><i class="fas fa-heart"></i></span> by Syed Mohammad Arfatur Rahman for Syeda Komol Hoque Ilma</p>
-            <p>© 2025 Our Love Story | Bridging Distances with Love</p>
+            <p>© 2023 Our Love Story | Bridging Distances with Love</p>
         </footer>
     </div>
 
     <div class="music-player">
-        <span class="music-title">Our Love Song</span>
-        <button class="music-control" id="play-btn"><i class="fas fa-play"></i></button>
-        <button class="music-control" id="pause-btn" style="display: none;"><i class="fas fa-pause"></i></button>
+        <div class="music-info">
+            <div class="music-title" id="music-title">Perfect</div>
+            <div class="music-artist" id="music-artist">Ed Sheeran</div>
+            <div class="progress-container" id="progress-container">
+                <div class="progress-bar" id="progress-bar"></div>
+            </div>
+        </div>
+        <div class="music-controls">
+            <button class="music-control" id="prev-btn"><i class="fas fa-step-backward"></i></button>
+            <button class="music-control" id="play-btn"><i class="fas fa-play"></i></button>
+            <button class="music-control" id="pause-btn" style="display: none;"><i class="fas fa-pause"></i></button>
+            <button class="music-control" id="next-btn"><i class="fas fa-step-forward"></i></button>
+        </div>
+        <div class="volume-container">
+            <i class="fas fa-volume-up"></i>
+            <input type="range" class="volume-slider" id="volume-slider" min="0" max="100" value="70">
+        </div>
     </div>
 
+    <div class="notification" id="notification"></div>
+
+    <!-- Audio element for music playback -->
+    <audio id="audio-player"></audio>
+
     <script>
+        // Music playlist with local files
+        const playlist = [
+            {
+                title: "Perfect",
+                artist: "Ed Sheeran",
+                src: "music/perfect.mp3"  // Local file in the music folder
+            },
+            {
+                title: "Thinking Out Loud",
+                artist: "Ed Sheeran",
+                src: "music/thinking-out-loud.mp3"  // Local file in the music folder
+            },
+            {
+                title: "All of Me",
+                artist: "John Legend",
+                src: "music/all-of-me.mp3"  // Local file in the music folder
+            }
+        ];
+
+        let currentTrack = 0;
+        let isPlaying = false;
+
+        // DOM elements
+        const audioPlayer = document.getElementById('audio-player');
+        const playBtn = document.getElementById('play-btn');
+        const pauseBtn = document.getElementById('pause-btn');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const musicTitle = document.getElementById('music-title');
+        const musicArtist = document.getElementById('music-artist');
+        const progressBar = document.getElementById('progress-bar');
+        const progressContainer = document.getElementById('progress-container');
+        const volumeSlider = document.getElementById('volume-slider');
+        const notification = document.getElementById('notification');
+
+        // Load the first track
+        function loadTrack(trackIndex) {
+            const track = playlist[trackIndex];
+            musicTitle.textContent = track.title;
+            musicArtist.textContent = track.artist;
+            audioPlayer.src = track.src;
+            audioPlayer.load();
+        }
+
+        // Show notification
+        function showNotification(message) {
+            notification.textContent = message;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Play the current track
+        function playTrack() {
+            audioPlayer.play()
+                .then(() => {
+                    isPlaying = true;
+                    playBtn.style.display = 'none';
+                    pauseBtn.style.display = 'inline-block';
+                    showNotification(`Now playing: ${playlist[currentTrack].title} by ${playlist[currentTrack].artist}`);
+                    
+                    // Create more hearts when music is playing
+                    const musicHeartInterval = setInterval(() => {
+                        if (isPlaying) {
+                            createHeart();
+                        } else {
+                            clearInterval(musicHeartInterval);
+                        }
+                    }, 800);
+                })
+                .catch(error => {
+                    showNotification("Playback failed. Make sure the music files are in the correct location.");
+                    console.error("Playback failed:", error);
+                });
+        }
+
+        // Pause the current track
+        function pauseTrack() {
+            audioPlayer.pause();
+            isPlaying = false;
+            pauseBtn.style.display = 'none';
+            playBtn.style.display = 'inline-block';
+        }
+
+        // Play the previous track
+        function prevTrack() {
+            currentTrack = (currentTrack - 1 + playlist.length) % playlist.length;
+            loadTrack(currentTrack);
+            if (isPlaying) {
+                playTrack();
+            }
+        }
+
+        // Play the next track
+        function nextTrack() {
+            currentTrack = (currentTrack + 1) % playlist.length;
+            loadTrack(currentTrack);
+            if (isPlaying) {
+                playTrack();
+            }
+        }
+
+        // Update progress bar
+        function updateProgress() {
+            const { duration, currentTime } = audioPlayer;
+            if (duration) {
+                const progressPercent = (currentTime / duration) * 100;
+                progressBar.style.width = `${progressPercent}%`;
+            }
+        }
+
+        // Set progress
+        function setProgress(e) {
+            const width = this.clientWidth;
+            const clickX = e.offsetX;
+            const duration = audioPlayer.duration;
+            if (duration) {
+                audioPlayer.currentTime = (clickX / width) * duration;
+            }
+        }
+
+        // Set volume
+        function setVolume() {
+            audioPlayer.volume = this.value / 100;
+        }
+
+        // Event listeners
+        playBtn.addEventListener('click', playTrack);
+        pauseBtn.addEventListener('click', pauseTrack);
+        prevBtn.addEventListener('click', prevTrack);
+        nextBtn.addEventListener('click', nextTrack);
+        audioPlayer.addEventListener('timeupdate', updateProgress);
+        audioPlayer.addEventListener('ended', nextTrack);
+        progressContainer.addEventListener('click', setProgress);
+        volumeSlider.addEventListener('input', setVolume);
+
+        // Load the first track
+        loadTrack(currentTrack);
+
         // Floating hearts animation
         function createHeart() {
             const heart = document.createElement('div');
@@ -689,32 +940,6 @@
             if (e.key === 'Enter') {
                 displayMessage();
             }
-        });
-        
-        // Music player functionality (simulated)
-        const playBtn = document.getElementById('play-btn');
-        const pauseBtn = document.getElementById('pause-btn');
-        let isPlaying = false;
-        
-        playBtn.addEventListener('click', function() {
-            playBtn.style.display = 'none';
-            pauseBtn.style.display = 'inline-block';
-            isPlaying = true;
-            
-            // Create more hearts when music is playing
-            const musicHeartInterval = setInterval(() => {
-                if (isPlaying) {
-                    createHeart();
-                } else {
-                    clearInterval(musicHeartInterval);
-                }
-            }, 500);
-        });
-        
-        pauseBtn.addEventListener('click', function() {
-            pauseBtn.style.display = 'none';
-            playBtn.style.display = 'inline-block';
-            isPlaying = false;
         });
         
         // Add some interactive effects to reason cards
