@@ -450,92 +450,74 @@
             }
         }
 
-        .music-player {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
-            border-radius: 50px;
-            padding: 15px;
-            display: flex;
-            align-items: center;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            z-index: 100;
-            width: 300px;
+        .music-section {
+            margin: 50px 0;
+            text-align: center;
         }
 
-        .music-info {
-            display: flex;
-            flex-direction: column;
-            flex-grow: 1;
-            margin-right: 10px;
+        .music-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: 0 auto;
         }
 
         .music-title {
-            font-size: 0.9rem;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #ff4458;
         }
 
-        .music-artist {
-            font-size: 0.7rem;
-            opacity: 0.8;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+        .music-description {
+            font-size: 1.1rem;
+            margin-bottom: 25px;
+            font-style: italic;
         }
 
-        .music-controls {
-            display: flex;
-            align-items: center;
-        }
-
-        .music-control {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 1.2rem;
-            cursor: pointer;
-            margin: 0 5px;
-            transition: transform 0.2s ease;
-        }
-
-        .music-control:hover {
-            transform: scale(1.2);
-        }
-
-        .progress-container {
+        .youtube-container {
+            position: relative;
             width: 100%;
-            height: 4px;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 2px;
-            margin-top: 8px;
-            cursor: pointer;
+            height: 0;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
 
-        .progress-bar {
+        .youtube-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
             height: 100%;
-            background: #ff4458;
-            border-radius: 2px;
-            width: 0%;
-            transition: width 0.1s linear;
+            border: none;
         }
 
-        .volume-container {
+        .music-links {
             display: flex;
-            align-items: center;
-            margin-left: 10px;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
         }
 
-        .volume-slider {
-            width: 50px;
-            height: 4px;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 2px;
-            outline: none;
-            cursor: pointer;
+        .music-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: rgba(255, 68, 88, 0.3);
+            border-radius: 30px;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .music-link:hover {
+            background: rgba(255, 68, 88, 0.5);
+            transform: translateY(-3px);
         }
 
         footer {
@@ -583,10 +565,18 @@
             z-index: 1000;
             opacity: 0;
             transition: opacity 0.3s ease;
+            max-width: 80%;
+            text-align: center;
         }
 
         .notification.show {
             opacity: 1;
+        }
+
+        .debug-info {
+            margin-top: 10px;
+            font-size: 0.8rem;
+            opacity: 0.8;
         }
 
         @media (max-width: 768px) {
@@ -619,20 +609,9 @@
                 grid-template-columns: 1fr;
             }
             
-            .music-player {
-                width: 250px;
+            .music-links {
                 flex-direction: column;
-                padding: 10px;
-            }
-            
-            .music-info {
-                margin-right: 0;
-                margin-bottom: 10px;
-            }
-            
-            .volume-container {
-                margin-left: 0;
-                margin-top: 10px;
+                align-items: center;
             }
         }
     </style>
@@ -768,6 +747,26 @@
             </div>
         </section>
 
+        <section class="music-section">
+            <div class="music-container">
+                <h2 class="music-title">Our Song</h2>
+                <p class="music-description">This song perfectly expresses how I feel about you, my love. Every word reminds me of you and our special connection.</p>
+                
+                <div class="youtube-container">
+                    <iframe src="https://www.youtube.com/embed/2Vv-BfVoq4g" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                
+                <div class="music-links">
+                    <a href="https://www.youtube.com/watch?v=2Vv-BfVoq4g" target="_blank" class="music-link">
+                        <i class="fab fa-youtube"></i> Watch on YouTube
+                    </a>
+                    <a href="https://open.spotify.com/track/2Spwq3wHbkL0YoydL7Hr1V" target="_blank" class="music-link">
+                        <i class="fab fa-spotify"></i> Listen on Spotify
+                    </a>
+                </div>
+            </div>
+        </section>
+
         <section class="countdown-container">
             <h2 class="countdown-title">Counting Down to Our Future</h2>
             <div class="countdown" id="countdown">Loading...</div>
@@ -787,173 +786,9 @@
         </footer>
     </div>
 
-    <div class="music-player">
-        <div class="music-info">
-            <div class="music-title" id="music-title">Perfect</div>
-            <div class="music-artist" id="music-artist">Ed Sheeran</div>
-            <div class="progress-container" id="progress-container">
-                <div class="progress-bar" id="progress-bar"></div>
-            </div>
-        </div>
-        <div class="music-controls">
-            <button class="music-control" id="prev-btn"><i class="fas fa-step-backward"></i></button>
-            <button class="music-control" id="play-btn"><i class="fas fa-play"></i></button>
-            <button class="music-control" id="pause-btn" style="display: none;"><i class="fas fa-pause"></i></button>
-            <button class="music-control" id="next-btn"><i class="fas fa-step-forward"></i></button>
-        </div>
-        <div class="volume-container">
-            <i class="fas fa-volume-up"></i>
-            <input type="range" class="volume-slider" id="volume-slider" min="0" max="100" value="70">
-        </div>
-    </div>
-
     <div class="notification" id="notification"></div>
 
-    <!-- Audio element for music playback -->
-    <audio id="audio-player"></audio>
-
     <script>
-        // Music playlist with local files
-        const playlist = [
-            {
-                title: "Perfect",
-                artist: "Ed Sheeran",
-                src: "music/Perfect.mp3"  // Local file in the music folder
-            },
-            {
-                title: "Thinking Out Loud",
-                artist: "Ed Sheeran",
-                src: "music/thinking-out-loud.mp3"  // Local file in the music folder
-            },
-            {
-                title: "All of Me",
-                artist: "John Legend",
-                src: "music/all-of-me.mp3"  // Local file in the music folder
-            }
-        ];
-
-        let currentTrack = 0;
-        let isPlaying = false;
-
-        // DOM elements
-        const audioPlayer = document.getElementById('audio-player');
-        const playBtn = document.getElementById('play-btn');
-        const pauseBtn = document.getElementById('pause-btn');
-        const prevBtn = document.getElementById('prev-btn');
-        const nextBtn = document.getElementById('next-btn');
-        const musicTitle = document.getElementById('music-title');
-        const musicArtist = document.getElementById('music-artist');
-        const progressBar = document.getElementById('progress-bar');
-        const progressContainer = document.getElementById('progress-container');
-        const volumeSlider = document.getElementById('volume-slider');
-        const notification = document.getElementById('notification');
-
-        // Load the first track
-        function loadTrack(trackIndex) {
-            const track = playlist[trackIndex];
-            musicTitle.textContent = track.title;
-            musicArtist.textContent = track.artist;
-            audioPlayer.src = track.src;
-            audioPlayer.load();
-        }
-
-        // Show notification
-        function showNotification(message) {
-            notification.textContent = message;
-            notification.classList.add('show');
-            
-            setTimeout(() => {
-                notification.classList.remove('show');
-            }, 3000);
-        }
-
-        // Play the current track
-        function playTrack() {
-            audioPlayer.play()
-                .then(() => {
-                    isPlaying = true;
-                    playBtn.style.display = 'none';
-                    pauseBtn.style.display = 'inline-block';
-                    showNotification(`Now playing: ${playlist[currentTrack].title} by ${playlist[currentTrack].artist}`);
-                    
-                    // Create more hearts when music is playing
-                    const musicHeartInterval = setInterval(() => {
-                        if (isPlaying) {
-                            createHeart();
-                        } else {
-                            clearInterval(musicHeartInterval);
-                        }
-                    }, 800);
-                })
-                .catch(error => {
-                    showNotification("Playback failed. Make sure the music files are in the correct location.");
-                    console.error("Playback failed:", error);
-                });
-        }
-
-        // Pause the current track
-        function pauseTrack() {
-            audioPlayer.pause();
-            isPlaying = false;
-            pauseBtn.style.display = 'none';
-            playBtn.style.display = 'inline-block';
-        }
-
-        // Play the previous track
-        function prevTrack() {
-            currentTrack = (currentTrack - 1 + playlist.length) % playlist.length;
-            loadTrack(currentTrack);
-            if (isPlaying) {
-                playTrack();
-            }
-        }
-
-        // Play the next track
-        function nextTrack() {
-            currentTrack = (currentTrack + 1) % playlist.length;
-            loadTrack(currentTrack);
-            if (isPlaying) {
-                playTrack();
-            }
-        }
-
-        // Update progress bar
-        function updateProgress() {
-            const { duration, currentTime } = audioPlayer;
-            if (duration) {
-                const progressPercent = (currentTime / duration) * 100;
-                progressBar.style.width = `${progressPercent}%`;
-            }
-        }
-
-        // Set progress
-        function setProgress(e) {
-            const width = this.clientWidth;
-            const clickX = e.offsetX;
-            const duration = audioPlayer.duration;
-            if (duration) {
-                audioPlayer.currentTime = (clickX / width) * duration;
-            }
-        }
-
-        // Set volume
-        function setVolume() {
-            audioPlayer.volume = this.value / 100;
-        }
-
-        // Event listeners
-        playBtn.addEventListener('click', playTrack);
-        pauseBtn.addEventListener('click', pauseTrack);
-        prevBtn.addEventListener('click', prevTrack);
-        nextBtn.addEventListener('click', nextTrack);
-        audioPlayer.addEventListener('timeupdate', updateProgress);
-        audioPlayer.addEventListener('ended', nextTrack);
-        progressContainer.addEventListener('click', setProgress);
-        volumeSlider.addEventListener('input', setVolume);
-
-        // Load the first track
-        loadTrack(currentTrack);
-
         // Floating hearts animation
         function createHeart() {
             const heart = document.createElement('div');
@@ -1060,7 +895,7 @@
         // Add a countdown to a special date (e.g., when you might meet)
         function updateCountdown() {
             // Set your special meeting date here (YYYY, MM, DD)
-            const specialDate = new Date(2024, 11, 31); // December 31, 2024
+            const specialDate = new Date(2025, 11, 31); // December 31, 2025
             const currentDate = new Date();
             
             // If the date has passed this year, set it for next year
