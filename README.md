@@ -2,7 +2,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Love for Syeda Komol Hoque Ilma</title>
+    <title>For My Love</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -41,18 +41,37 @@
             position: relative;
         }
 
-        h1 {
+        .header-content {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            animation: fadeInDown 1.5s ease;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .header-title {
             font-size: 3.5rem;
             margin-bottom: 20px;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
             animation: fadeInDown 1.5s ease;
         }
 
-        .subtitle {
+        .header-subtitle {
             font-size: 1.5rem;
             margin-bottom: 30px;
             opacity: 0.9;
             animation: fadeInUp 1.5s ease;
+        }
+
+        .header-quote {
+            font-style: italic;
+            font-size: 1.2rem;
+            opacity: 0.8;
+            margin-top: 20px;
+            animation: fadeIn 2s ease;
         }
 
         @keyframes fadeInDown {
@@ -77,6 +96,11 @@
             }
         }
 
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
         .heart {
             color: #ff4458;
             font-size: 2rem;
@@ -98,11 +122,6 @@
             margin: 40px 0;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
             animation: fadeIn 2s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
         }
 
         .letter-content {
@@ -322,6 +341,26 @@
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
         }
 
+        .countdown-container {
+            text-align: center;
+            margin: 50px 0;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .countdown-title {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .countdown {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
         .floating-hearts {
             position: fixed;
             top: 0;
@@ -395,12 +434,32 @@
             animation: pulse 1.5s infinite;
         }
 
+        .distance-section {
+            text-align: center;
+            margin: 50px 0;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .distance-title {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .distance-content {
+            font-size: 1.2rem;
+            line-height: 1.8;
+        }
+
         @media (max-width: 768px) {
-            h1 {
+            .header-title {
                 font-size: 2.5rem;
             }
             
-            .subtitle {
+            .header-subtitle {
                 font-size: 1.2rem;
             }
             
@@ -432,116 +491,133 @@
     
     <div class="container">
         <header>
-            <h1>My Love for Syeda Komol Hoque Ilma <span class="heart"><i class="fas fa-heart"></i></span></h1>
-            <p class="subtitle">A digital love letter from Syed Mohammad Arfatur Rahman</p>
+            <div class="header-content">
+                <h1 class="header-title">A Love Beyond Distance <span class="heart"><i class="fas fa-heart"></i></span></h1>
+                <p class="header-subtitle">From Syed Mohammad Arfatur Rahman to Syeda Komol Hoque Ilma</p>
+                <p class="header-quote">"Distance means so little when someone means so much"</p>
+            </div>
         </header>
 
         <section class="love-letter">
             <div class="letter-content">
                 <p>My dearest Ilma,</p>
-                <p>From the moment I first saw you, my world changed. Your smile brightens my darkest days, and your laughter is the sweetest melody I've ever heard. Every moment with you feels like a dream I never want to wake from.</p>
-                <p>You are not just the love of my life; you are my life. Your kindness, your intelligence, your beauty - both inside and out - captivate me more each day. I fall in love with you over and over again, every single day.</p>
-                <p>I promise to cherish you, to support you, to make you laugh, and to love you unconditionally for all the days of my life.</p>
+                <p>Though we haven't yet met in person, my heart has already found its home in you. In this digital age where connections span across distances, ours feels like something truly special and destined.</p>
+                <p>Every message we share, every conversation we have, brings me closer to you in spirit. Your words paint a picture of someone so beautiful, inside and out, and I find myself falling more deeply with each passing day.</p>
+                <p>The miles between us are merely numbers on a map, for you are always in my thoughts and in my heart. I dream of the day when I can finally look into your eyes, hear your voice in person, and take your hand in mine.</p>
+                <p>Until that day comes, know that my love for you grows stronger with every sunrise and every sunset. Distance cannot diminish what we share; it only makes our eventual reunion that much more precious.</p>
             </div>
             <div class="signature">
-                Forever yours,<br>
+                Forever yours, across any distance,<br>
                 Syed Mohammad Arfatur Rahman
+            </div>
+        </section>
+
+        <section class="distance-section">
+            <h2 class="distance-title">Our Connection Knows No Bounds</h2>
+            <div class="distance-content">
+                <p>Though we are separated by miles, our hearts beat as one. Every day brings us closer to the moment when we will finally meet face to face.</p>
+                <p>Until then, we continue to build this beautiful connection through words, dreams, and the promise of what's to come.</p>
             </div>
         </section>
 
         <section class="photo-gallery">
             <div class="photo-frame">
-                <img src="https://picsum.photos/seed/love1/400/300.jpg" alt="Our memories">
-                <div class="photo-caption">The day we met</div>
+                <img src="https://picsum.photos/seed/distance1/400/300.jpg" alt="Dreaming of you">
+                <div class="photo-caption">Dreaming of our first meeting</div>
             </div>
             <div class="photo-frame">
-                <img src="https://picsum.photos/seed/love2/400/300.jpg" alt="Our adventures">
-                <div class="photo-caption">Our adventures together</div>
+                <img src="https://picsum.photos/seed/distance2/400/300.jpg" alt="Our connection">
+                <div class="photo-caption">Our connection across the miles</div>
             </div>
             <div class="photo-frame">
-                <img src="https://picsum.photos/seed/love3/400/300.jpg" alt="Special moments">
-                <div class="photo-caption">Special moments</div>
+                <img src="https://picsum.photos/seed/distance3/400/300.jpg" alt="Waiting for you">
+                <div class="photo-caption">Counting moments until we meet</div>
             </div>
             <div class="photo-frame">
-                <img src="https://picsum.photos/seed/love4/400/300.jpg" alt="Our future">
-                <div class="photo-caption">Dreaming of our future</div>
+                <img src="https://picsum.photos/seed/distance4/400/300.jpg" alt="Our future">
+                <div class="photo-caption">The future we're building together</div>
             </div>
         </section>
 
         <section class="reasons">
             <div class="reason-card">
-                <div class="reason-icon"><i class="fas fa-smile"></i></div>
-                <h3>Your Smile</h3>
-                <p>Your smile lights up my world and makes everything better. It's the first thing I want to see every morning and the last thing I want to see every night.</p>
+                <div class="reason-icon"><i class="fas fa-comments"></i></div>
+                <h3>Your Words</h3>
+                <p>The way you express yourself through words captivates me. Every message from you brightens my day and makes me feel closer to you, despite the distance between us.</p>
             </div>
             <div class="reason-card">
                 <div class="reason-icon"><i class="fas fa-brain"></i></div>
-                <h3>Your Intelligence</h3>
-                <p>Your brilliant mind and the way you see the world inspire me every day. Conversations with you are my favorite kind of adventure.</p>
+                <h3>Your Mind</h3>
+                <p>Your intelligence and the way you see the world inspire me. Our conversations are the highlight of my days, and I learn something new from you every time we talk.</p>
             </div>
             <div class="reason-card">
                 <div class="reason-icon"><i class="fas fa-heart"></i></div>
-                <h3 Your Kindness</h3>
-                <p>Your compassion for others and your loving heart make you not just beautiful, but truly extraordinary.</p>
+                <h3>Your Kindness</h3>
+                <p>Even through digital communication, your compassion and warmth shine through. Your kindness knows no bounds, and it's one of the many things I adore about you.</p>
             </div>
             <div class="reason-card">
                 <div class="reason-icon"><i class="fas fa-laugh"></i></div>
-                <h3>Your Laughter</h3>
-                <p>The sound of your laughter is my favorite music. It's contagious and fills my heart with pure joy.</p>
+                <h3>Your Joy</h3>
+                <p>Your happiness and positive outlook on life are contagious. Even when we're miles apart, your joy lifts my spirits and brings a smile to my face.</p>
             </div>
             <div class="reason-card">
                 <div class="reason-icon"><i class="fas fa-star"></i></div>
-                <h3 Your Passion</h3>
-                <p>The way you pursue your dreams with such passion and determination motivates me to be a better person.</p>
+                <h3>Your Dreams</h3>
+                <p>The passion you have for your dreams and goals inspires me to be better. I can't wait to support you in person as you chase everything you desire in life.</p>
             </div>
             <div class="reason-card">
                 <div class="reason-icon"><i class="fas fa-infinity"></i></div>
                 <h3>Your Love</h3>
-                <p>The love you give me is the greatest gift I've ever received. It makes me feel complete and cherished beyond measure.</p>
+                <p>The love and affection you show me, even from afar, makes me feel like the luckiest person in the world. Distance cannot diminish the love we share.</p>
             </div>
         </section>
 
         <section class="timeline">
-            <h2 style="text-align: center; margin-bottom: 40px;">Our Love Story</h2>
+            <h2 style="text-align: center; margin-bottom: 40px;">Our Journey So Far</h2>
             <div class="timeline-item">
                 <div class="timeline-dot"></div>
                 <div class="timeline-content">
-                    <h3>The Day We Met</h3>
-                    <p>The moment our eyes first met, I knew my life would never be the same.</p>
+                    <h3>First Connection</h3>
+                    <p>The moment our paths first crossed, even if digitally, I felt something special begin to bloom.</p>
                 </div>
             </div>
             <div class="timeline-item">
                 <div class="timeline-dot"></div>
                 <div class="timeline-content">
-                    <h3>Our First Date</h3>
-                    <p>Nervous, excited, and completely captivated by you from the very beginning.</p>
+                    <h3>Our First Conversation</h3>
+                    <p>Nervous, excited, and completely captivated by you from our very first exchange of words.</p>
                 </div>
             </div>
             <div class="timeline-item">
                 <div class="timeline-dot"></div>
                 <div class="timeline-content">
                     <h3>Falling in Love</h3>
-                    <p>Every moment spent with you made me fall deeper and deeper in love.</p>
+                    <p>Every conversation, every shared thought, made me fall deeper and deeper in love with the person you are.</p>
                 </div>
             </div>
             <div class="timeline-item">
                 <div class="timeline-dot"></div>
                 <div class="timeline-content">
                     <h3>"I Love You"</h3>
-                    <p>The three most meaningful words I've ever said, and I'll never stop saying them.</p>
+                    <p>The three most meaningful words I've ever said, and I'll never stop saying them, no matter the distance between us.</p>
                 </div>
             </div>
             <div class="timeline-item">
                 <div class="timeline-dot"></div>
                 <div class="timeline-content">
-                    <h3>Our Future Together</h3>
-                    <p>Every day with you is a step toward the beautiful future we're building together.</p>
+                    <h3>Dreaming of Our First Meeting</h3>
+                    <p>Every day brings us closer to the moment when we will finally meet face to face and begin the next chapter of our story.</p>
                 </div>
             </div>
         </section>
 
+        <section class="countdown-container">
+            <h2 class="countdown-title">Counting Down to Our Future</h2>
+            <div class="countdown" id="countdown">Loading...</div>
+        </section>
+
         <section class="interactive-message">
-            <h2>Send a message of love</h2>
+            <h2>Send a message across the miles</h2>
             <p>Type a message to see it displayed with love</p>
             <input type="text" class="message-input" id="message-input" placeholder="Type your message of love here...">
             <button class="send-btn" id="send-message">Send Love</button>
@@ -550,7 +626,7 @@
 
         <footer>
             <p>Made with <span class="footer-heart"><i class="fas fa-heart"></i></span> by Syed Mohammad Arfatur Rahman for Syeda Komol Hoque Ilma</p>
-            <p>© 2025 My Love for Ilma | Forever and Always</p>
+            <p>© 2025 Our Love Story | Bridging Distances with Love</p>
         </footer>
     </div>
 
@@ -690,9 +766,9 @@
             }, 500);
         });
         
-        // Add a countdown to a special date (e.g., anniversary)
+        // Add a countdown to a special date (e.g., when you might meet)
         function updateCountdown() {
-            // Set your special date here (YYYY, MM, DD)
+            // Set your special meeting date here (YYYY, MM, DD)
             const specialDate = new Date(2024, 11, 31); // December 31, 2024
             const currentDate = new Date();
             
@@ -708,11 +784,9 @@
             const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((diff % (1000 * 60)) / 1000);
             
-            // Update the countdown display if it exists
+            // Update the countdown display
             const countdownElement = document.getElementById('countdown');
-            if (countdownElement) {
-                countdownElement.innerHTML = `${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds until our special day!`;
-            }
+            countdownElement.innerHTML = `${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds until we hopefully meet!`;
         }
         
         // Update the countdown every second
