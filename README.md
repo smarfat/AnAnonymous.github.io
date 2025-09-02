@@ -1,4 +1,4 @@
-
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -870,59 +870,92 @@
         // Site configuration
         const siteConfig = {
             name: "An Anonymous",
-            baseUrl: "https://smarfat.github.io/AnAnonymous.github.io"
+            // Dynamically determine the base URL
+            get baseUrl() {
+                // Get the current URL without query parameters and hash
+                const url = window.location.href.split('?')[0].split('#')[0];
+                // Remove index.html if present
+                return url.replace(/index\.html$/, '');
+            }
         };
         
         // Initialize data from localStorage or use defaults
         function initializeData() {
-            // Check if users data exists in localStorage
-            let users = JSON.parse(localStorage.getItem('anonyUsers'));
-            if (!users) {
-                // Default users if none exist in localStorage
-                users = [
-                    { id: 1, username: 'demo', email: 'demo@example.com', password: 'password123' },
-                    { id: 2, username: 'user1', email: 'user1@example.com', password: 'password123' },
-                    { id: 3, username: 'user2', email: 'user2@example.com', password: 'password123' }
-                ];
-                localStorage.setItem('anonyUsers', JSON.stringify(users));
-            }
-            
-            // Check if messages data exists in localStorage
-            let messages = JSON.parse(localStorage.getItem('anonyMessages'));
-            if (!messages) {
-                // Default messages if none exist in localStorage
-                messages = [
-                    { id: 1, senderId: 2, recipientId: 1, content: 'This is a test message from user1 to demo', timestamp: new Date().toISOString() },
-                    { id: 2, senderId: null, recipientId: 1, content: 'This is an anonymous message', timestamp: new Date().toISOString() },
-                    { id: 3, senderId: 3, recipientId: 1, content: 'This is another message from user2', timestamp: new Date().toISOString() }
-                ];
-                localStorage.setItem('anonyMessages', JSON.stringify(messages));
-            }
-            
-            // Check if stats data exists in localStorage
-            let stats = JSON.parse(localStorage.getItem('anonyStats'));
-            if (!stats) {
-                // Default stats if none exist in localStorage
-                stats = {
-                    messagesReceived: 24,
-                    messagesSent: 18,
-                    profileViews: 142
+            try {
+                // Check if users data exists in localStorage
+                let users = JSON.parse(localStorage.getItem('anonyUsers'));
+                if (!users) {
+                    // Default users if none exist in localStorage
+                    users = [
+                        { id: 1, username: 'demo', email: 'demo@example.com', password: 'password123' },
+                        { id: 2, username: 'user1', email: 'user1@example.com', password: 'password123' },
+                        { id: 3, username: 'user2', email: 'user2@example.com', password: 'password123' }
+                    ];
+                    localStorage.setItem('anonyUsers', JSON.stringify(users));
+                }
+                
+                // Check if messages data exists in localStorage
+                let messages = JSON.parse(localStorage.getItem('anonyMessages'));
+                if (!messages) {
+                    // Default messages if none exist in localStorage
+                    messages = [
+                        { id: 1, senderId: 2, recipientId: 1, content: 'This is a test message from user1 to demo', timestamp: new Date().toISOString() },
+                        { id: 2, senderId: null, recipientId: 1, content: 'This is an anonymous message', timestamp: new Date().toISOString() },
+                        { id: 3, senderId: 3, recipientId: 1, content: 'This is another message from user2', timestamp: new Date().toISOString() }
+                    ];
+                    localStorage.setItem('anonyMessages', JSON.stringify(messages));
+                }
+                
+                // Check if stats data exists in localStorage
+                let stats = JSON.parse(localStorage.getItem('anonyStats'));
+                if (!stats) {
+                    // Default stats if none exist in localStorage
+                    stats = {
+                        messagesReceived: 24,
+                        messagesSent: 18,
+                        profileViews: 142
+                    };
+                    localStorage.setItem('anonyStats', JSON.stringify(stats));
+                }
+                
+                return {
+                    users: users,
+                    messages: messages,
+                    stats: stats
                 };
-                localStorage.setItem('anonyStats', JSON.stringify(stats));
+            } catch (error) {
+                console.error('Error initializing data:', error);
+                // Return default data if localStorage fails
+                return {
+                    users: [
+                        { id: 1, username: 'demo', email: 'demo@example.com', password: 'password123' },
+                        { id: 2, username: 'user1', email: 'user1@example.com', password: 'password123' },
+                        { id: 3, username: 'user2', email: 'user2@example.com', password: 'password123' }
+                    ],
+                    messages: [
+                        { id: 1, senderId: 2, recipientId: 1, content: 'This is a test message from user1 to demo', timestamp: new Date().toISOString() },
+                        { id: 2, senderId: null, recipientId: 1, content: 'This is an anonymous message', timestamp: new Date().toISOString() },
+                        { id: 3, senderId: 3, recipientId: 1, content: 'This is another message from user2', timestamp: new Date().toISOString() }
+                    ],
+                    stats: {
+                        messagesReceived: 24,
+                        messagesSent: 18,
+                        profileViews: 142
+                    }
+                };
             }
-            
-            return {
-                users: users,
-                messages: messages,
-                stats: stats
-            };
         }
         
         // Save data to localStorage
         function saveData(data) {
-            localStorage.setItem('anonyUsers', JSON.stringify(data.users));
-            localStorage.setItem('anonyMessages', JSON.stringify(data.messages));
-            localStorage.setItem('anonyStats', JSON.stringify(data.stats));
+            try {
+                localStorage.setItem('anonyUsers', JSON.stringify(data.users));
+                localStorage.setItem('anonyMessages', JSON.stringify(data.messages));
+                localStorage.setItem('anonyStats', JSON.stringify(data.stats));
+            } catch (error) {
+                console.error('Error saving data:', error);
+                showNotification('Error saving data. Some features may not work properly.', 'error');
+            }
         }
         
         // Initialize app data
@@ -944,32 +977,30 @@
         loginForm.addEventListener('submit', handleLogin);
         registerForm.addEventListener('submit', handleRegister);
         
-        // Function to extract username from URL - improved for mobile
+        // Function to extract username from URL - improved for all devices
         function getUsernameFromURL() {
-            let username = null;
-            
-            // Check for URL parameter first
-            const urlParams = new URLSearchParams(window.location.search);
-            const paramUsername = urlParams.get('sendto');
-            if (paramUsername) {
-                username = paramUsername;
-            }
-            
-            // Check for hash-based username (e.g., #/username)
-            if (!username) {
-                const hash = window.location.hash;
+            try {
+                // Use URL API for consistent parsing across browsers
+                const url = new URL(window.location.href);
+                
+                // Check for URL parameter first
+                const sendto = url.searchParams.get('sendto');
+                if (sendto) {
+                    return sendto;
+                }
+                
+                // Check for hash-based username (e.g., #/username)
+                const hash = url.hash;
                 if (hash && hash.length > 1) {
                     const hashUsername = hash.substring(1); // Remove the #
                     // Check if it looks like a username
                     if (/^[a-zA-Z0-9_-]+$/.test(hashUsername)) {
-                        username = hashUsername;
+                        return hashUsername;
                     }
                 }
-            }
-            
-            // Try to extract from path (for GitHub Pages custom 404 page)
-            if (!username) {
-                const pathParts = window.location.pathname.split('/');
+                
+                // Try to extract from path (for GitHub Pages custom 404 page)
+                const pathParts = url.pathname.split('/');
                 // Remove empty parts and index.html if present
                 const cleanParts = pathParts.filter(part => part && part !== 'index.html');
                 
@@ -978,35 +1009,15 @@
                     const potentialUsername = cleanParts[cleanParts.length - 1];
                     // Check if it looks like a username (alphanumeric, may include underscores or hyphens)
                     if (/^[a-zA-Z0-9_-]+$/.test(potentialUsername)) {
-                        username = potentialUsername;
-                    }
-                }
-            }
-            
-            // For mobile: check if the URL contains the baseUrl followed by a username
-            if (!username && window.location.href.includes(siteConfig.baseUrl)) {
-                const urlParts = window.location.href.split('/');
-                const baseUrlParts = siteConfig.baseUrl.split('/');
-                
-                // Find where the baseUrl ends in the URL
-                let startIndex = -1;
-                for (let i = 0; i < baseUrlParts.length; i++) {
-                    if (urlParts[i] !== baseUrlParts[i]) {
-                        startIndex = i;
-                        break;
+                        return potentialUsername;
                     }
                 }
                 
-                // If we found the baseUrl, check the next part for a username
-                if (startIndex === -1 && urlParts.length > baseUrlParts.length) {
-                    const potentialUsername = urlParts[baseUrlParts.length];
-                    if (/^[a-zA-Z0-9_-]+$/.test(potentialUsername)) {
-                        username = potentialUsername;
-                    }
-                }
+                return null;
+            } catch (error) {
+                console.error('Error parsing URL:', error);
+                return null;
             }
-            
-            return username;
         }
         
         // Function to get or create a user by username
@@ -1031,51 +1042,61 @@
         
         // Check for saved user session on page load
         function checkUserSession() {
-            const savedUserId = localStorage.getItem('anonyCurrentUserId');
-            if (savedUserId) {
-                const userId = parseInt(savedUserId);
-                currentUser = appData.users.find(u => u.id === userId);
-                if (currentUser) {
-                    showAppView();
-                    loadMessages();
-                    updateStats();
-                    return true;
+            try {
+                const savedUserId = localStorage.getItem('anonyCurrentUserId');
+                if (savedUserId) {
+                    const userId = parseInt(savedUserId);
+                    currentUser = appData.users.find(u => u.id === userId);
+                    if (currentUser) {
+                        showAppView();
+                        loadMessages();
+                        updateStats();
+                        return true;
+                    }
                 }
+                return false;
+            } catch (error) {
+                console.error('Error checking user session:', error);
+                return false;
             }
-            return false;
         }
         
         // Check URL parameters on page load
         window.addEventListener('DOMContentLoaded', () => {
-            // Update page title
-            document.title = siteConfig.name + " - Anonymous Messaging";
-            
-            // Update logo text
-            const logoElements = document.querySelectorAll('.logo');
-            logoElements.forEach(logo => {
-                logo.innerHTML = `<i class="fas fa-user-secret"></i> ${siteConfig.name}`;
-            });
-            
-            // Update auth title
-            const authTitle = document.querySelector('.auth-title');
-            if (authTitle) {
-                authTitle.innerHTML = `<i class="fas fa-user-secret"></i> ${siteConfig.name}`;
-            }
-            
-            // Check for saved user session first
-            if (checkUserSession()) {
-                return;
-            }
-            
-            // Get username from URL
-            const recipient = getUsernameFromURL();
-            
-            if (recipient) {
-                // Always show the public message form, regardless of whether the user exists
-                authView.classList.add('hidden');
-                appView.classList.add('hidden');
-                publicMessageForm.classList.remove('hidden');
-                document.getElementById('public-recipient').textContent = recipient;
+            try {
+                // Update page title
+                document.title = siteConfig.name + " - Anonymous Messaging";
+                
+                // Update logo text
+                const logoElements = document.querySelectorAll('.logo');
+                logoElements.forEach(logo => {
+                    logo.innerHTML = `<i class="fas fa-user-secret"></i> ${siteConfig.name}`;
+                });
+                
+                // Update auth title
+                const authTitle = document.querySelector('.auth-title');
+                if (authTitle) {
+                    authTitle.innerHTML = `<i class="fas fa-user-secret"></i> ${siteConfig.name}`;
+                }
+                
+                // Check for saved user session first
+                if (checkUserSession()) {
+                    return;
+                }
+                
+                // Get username from URL
+                const recipient = getUsernameFromURL();
+                
+                if (recipient) {
+                    // Always show the public message form, regardless of whether the user exists
+                    authView.classList.add('hidden');
+                    appView.classList.add('hidden');
+                    publicMessageForm.classList.remove('hidden');
+                    document.getElementById('public-recipient').textContent = recipient;
+                }
+            } catch (error) {
+                console.error('Error during DOMContentLoaded:', error);
+                showNotification('Error initializing the application. Please refresh the page.', 'error');
             }
         });
         
@@ -1100,31 +1121,36 @@
         function handleLogin(e) {
             e.preventDefault();
             
-            const email = document.getElementById('login-email').value;
-            const password = document.getElementById('login-password').value;
-            
-            // Find user in database
-            const user = appData.users.find(u => u.email === email && u.password === password);
-            
-            if (user) {
-                currentUser = user;
+            try {
+                const email = document.getElementById('login-email').value;
+                const password = document.getElementById('login-password').value;
                 
-                // Save user session
-                localStorage.setItem('anonyCurrentUserId', user.id);
+                // Find user in database
+                const user = appData.users.find(u => u.email === email && u.password === password);
                 
-                showNotification('Login successful!', 'success');
-                showAppView();
-                loadMessages();
-                updateStats();
-                
-                // Check if there's a stored recipient
-                const storedRecipient = sessionStorage.getItem('recipient');
-                if (storedRecipient) {
-                    document.getElementById('recipient').value = storedRecipient;
-                    sessionStorage.removeItem('recipient');
+                if (user) {
+                    currentUser = user;
+                    
+                    // Save user session
+                    localStorage.setItem('anonyCurrentUserId', user.id);
+                    
+                    showNotification('Login successful!', 'success');
+                    showAppView();
+                    loadMessages();
+                    updateStats();
+                    
+                    // Check if there's a stored recipient
+                    const storedRecipient = sessionStorage.getItem('recipient');
+                    if (storedRecipient) {
+                        document.getElementById('recipient').value = storedRecipient;
+                        sessionStorage.removeItem('recipient');
+                    }
+                } else {
+                    showNotification('Invalid email or password', 'error');
                 }
-            } else {
-                showNotification('Invalid email or password', 'error');
+            } catch (error) {
+                console.error('Error during login:', error);
+                showNotification('Error during login. Please try again.', 'error');
             }
         }
         
@@ -1132,307 +1158,358 @@
         function handleRegister(e) {
             e.preventDefault();
             
-            const username = document.getElementById('register-username').value;
-            const email = document.getElementById('register-email').value;
-            const password = document.getElementById('register-password').value;
-            
-            // Password validation
-            if (password.length < 6) {
-                showNotification('Password must be at least 6 characters long', 'error');
-                return;
+            try {
+                const username = document.getElementById('register-username').value;
+                const email = document.getElementById('register-email').value;
+                const password = document.getElementById('register-password').value;
+                
+                // Password validation
+                if (password.length < 6) {
+                    showNotification('Password must be at least 6 characters long', 'error');
+                    return;
+                }
+                
+                // Check if user already exists
+                const userExists = appData.users.some(u => u.email === email || u.username === username);
+                
+                if (userExists) {
+                    showNotification('User with this email or username already exists', 'error');
+                    return;
+                }
+                
+                // Create new user
+                const newUser = {
+                    id: appData.users.length + 1,
+                    username,
+                    email,
+                    password
+                };
+                
+                appData.users.push(newUser);
+                saveData(appData);
+                currentUser = newUser;
+                
+                // Save user session
+                localStorage.setItem('anonyCurrentUserId', newUser.id);
+                
+                showNotification('Registration successful!', 'success');
+                showAppView();
+                loadMessages();
+                updateStats();
+            } catch (error) {
+                console.error('Error during registration:', error);
+                showNotification('Error during registration. Please try again.', 'error');
             }
-            
-            // Check if user already exists
-            const userExists = appData.users.some(u => u.email === email || u.username === username);
-            
-            if (userExists) {
-                showNotification('User with this email or username already exists', 'error');
-                return;
-            }
-            
-            // Create new user
-            const newUser = {
-                id: appData.users.length + 1,
-                username,
-                email,
-                password
-            };
-            
-            appData.users.push(newUser);
-            saveData(appData);
-            currentUser = newUser;
-            
-            // Save user session
-            localStorage.setItem('anonyCurrentUserId', newUser.id);
-            
-            showNotification('Registration successful!', 'success');
-            showAppView();
-            loadMessages();
-            updateStats();
         }
         
         // Show app view after login
         function showAppView() {
-            authView.classList.add('hidden');
-            publicMessageForm.classList.add('hidden');
-            appView.classList.remove('hidden');
-            
-            // Update user info in header
-            document.getElementById('user-username').textContent = currentUser.username;
-            document.getElementById('user-avatar').textContent = currentUser.username.charAt(0).toUpperCase();
-            
-            // Generate and display user link with proper format
-            const userLink = `${siteConfig.baseUrl}/?sendto=${currentUser.username}`;
-            document.getElementById('user-link').value = userLink;
+            try {
+                authView.classList.add('hidden');
+                publicMessageForm.classList.add('hidden');
+                appView.classList.remove('hidden');
+                
+                // Update user info in header
+                document.getElementById('user-username').textContent = currentUser.username;
+                document.getElementById('user-avatar').textContent = currentUser.username.charAt(0).toUpperCase();
+                
+                // Generate and display user link with proper format
+                const userLink = `${siteConfig.baseUrl}/?sendto=${currentUser.username}`;
+                document.getElementById('user-link').value = userLink;
+            } catch (error) {
+                console.error('Error showing app view:', error);
+                showNotification('Error loading the application. Please refresh the page.', 'error');
+            }
         }
         
         // Logout function
         function logout() {
-            currentUser = null;
-            localStorage.removeItem('anonyCurrentUserId');
-            appView.classList.add('hidden');
-            authView.classList.remove('hidden');
-            
-            // Reset forms
-            loginForm.reset();
-            registerForm.reset();
-            switchTab('login');
-            
-            showNotification('You have been logged out', 'success');
+            try {
+                currentUser = null;
+                localStorage.removeItem('anonyCurrentUserId');
+                appView.classList.add('hidden');
+                authView.classList.remove('hidden');
+                
+                // Reset forms
+                loginForm.reset();
+                registerForm.reset();
+                switchTab('login');
+                
+                showNotification('You have been logged out', 'success');
+            } catch (error) {
+                console.error('Error during logout:', error);
+                showNotification('Error during logout. Please try again.', 'error');
+            }
         }
         
         // Send message function - fixed
         function sendMessage() {
-            if (!currentUser) {
-                showNotification('You must be logged in to send messages', 'error');
-                return;
+            try {
+                if (!currentUser) {
+                    showNotification('You must be logged in to send messages', 'error');
+                    return;
+                }
+                
+                const recipientUsername = document.getElementById('recipient').value.trim();
+                const messageContent = document.getElementById('message').value.trim();
+                
+                if (!recipientUsername || !messageContent) {
+                    showNotification('Please fill in all fields', 'error');
+                    return;
+                }
+                
+                // Get or create recipient
+                const recipient = getOrCreateUser(recipientUsername);
+                
+                // Create new message
+                const newMessage = {
+                    id: appData.messages.length + 1,
+                    senderId: currentUser.id,
+                    recipientId: recipient.id,
+                    content: messageContent,
+                    timestamp: new Date().toISOString()
+                };
+                
+                appData.messages.push(newMessage);
+                saveData(appData);
+                
+                // Update stats
+                appData.stats.messagesSent++;
+                saveData(appData);
+                updateStats();
+                
+                // Clear form
+                document.getElementById('recipient').value = '';
+                document.getElementById('message').value = '';
+                
+                showNotification('Message sent successfully!', 'success');
+                
+                // If recipient is current user, refresh messages
+                if (recipient.id === currentUser.id) {
+                    loadMessages();
+                }
+                
+                // Add animation to the send button
+                const sendButton = event.target;
+                sendButton.classList.add('pulse');
+                setTimeout(() => {
+                    sendButton.classList.remove('pulse');
+                }, 1000);
+            } catch (error) {
+                console.error('Error sending message:', error);
+                showNotification('Error sending message. Please try again.', 'error');
             }
-            
-            const recipientUsername = document.getElementById('recipient').value.trim();
-            const messageContent = document.getElementById('message').value.trim();
-            
-            if (!recipientUsername || !messageContent) {
-                showNotification('Please fill in all fields', 'error');
-                return;
-            }
-            
-            // Get or create recipient
-            const recipient = getOrCreateUser(recipientUsername);
-            
-            // Create new message
-            const newMessage = {
-                id: appData.messages.length + 1,
-                senderId: currentUser.id,
-                recipientId: recipient.id,
-                content: messageContent,
-                timestamp: new Date().toISOString()
-            };
-            
-            appData.messages.push(newMessage);
-            saveData(appData);
-            
-            // Update stats
-            appData.stats.messagesSent++;
-            saveData(appData);
-            updateStats();
-            
-            // Clear form
-            document.getElementById('recipient').value = '';
-            document.getElementById('message').value = '';
-            
-            showNotification('Message sent successfully!', 'success');
-            
-            // If recipient is current user, refresh messages
-            if (recipient.id === currentUser.id) {
-                loadMessages();
-            }
-            
-            // Add animation to the send button
-            const sendButton = event.target;
-            sendButton.classList.add('pulse');
-            setTimeout(() => {
-                sendButton.classList.remove('pulse');
-            }, 1000);
         }
         
         // Send public message function
         function sendPublicMessage() {
-            const recipientUsername = document.getElementById('public-recipient').textContent;
-            const messageContent = document.getElementById('public-message').value.trim();
-            
-            if (!messageContent) {
-                showNotification('Please enter a message', 'error');
-                return;
+            try {
+                const recipientUsername = document.getElementById('public-recipient').textContent;
+                const messageContent = document.getElementById('public-message').value.trim();
+                
+                if (!messageContent) {
+                    showNotification('Please enter a message', 'error');
+                    return;
+                }
+                
+                // Get or create recipient
+                const recipient = getOrCreateUser(recipientUsername);
+                
+                // Create new message (anonymous)
+                const newMessage = {
+                    id: appData.messages.length + 1,
+                    senderId: null, // null means anonymous
+                    recipientId: recipient.id,
+                    content: messageContent,
+                    timestamp: new Date().toISOString()
+                };
+                
+                appData.messages.push(newMessage);
+                saveData(appData);
+                
+                // Clear form
+                document.getElementById('public-message').value = '';
+                
+                showNotification('Message sent successfully!', 'success');
+                
+                // Add animation to the send button
+                const sendButton = event.target;
+                sendButton.classList.add('pulse');
+                setTimeout(() => {
+                    sendButton.classList.remove('pulse');
+                }, 1000);
+            } catch (error) {
+                console.error('Error sending public message:', error);
+                showNotification('Error sending message. Please try again.', 'error');
             }
-            
-            // Get or create recipient
-            const recipient = getOrCreateUser(recipientUsername);
-            
-            // Create new message (anonymous)
-            const newMessage = {
-                id: appData.messages.length + 1,
-                senderId: null, // null means anonymous
-                recipientId: recipient.id,
-                content: messageContent,
-                timestamp: new Date().toISOString()
-            };
-            
-            appData.messages.push(newMessage);
-            saveData(appData);
-            
-            // Clear form
-            document.getElementById('public-message').value = '';
-            
-            showNotification('Message sent successfully!', 'success');
-            
-            // Add animation to the send button
-            const sendButton = event.target;
-            sendButton.classList.add('pulse');
-            setTimeout(() => {
-                sendButton.classList.remove('pulse');
-            }, 1000);
         }
         
         // Load messages for current user
         function loadMessages() {
-            if (!currentUser) {
-                return;
+            try {
+                if (!currentUser) {
+                    return;
+                }
+                
+                const messageList = document.getElementById('message-list');
+                messageList.innerHTML = '';
+                
+                // Get messages for current user
+                const userMessages = appData.messages.filter(m => m.recipientId === currentUser.id);
+                
+                if (userMessages.length === 0) {
+                    messageList.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">No messages yet.</p>';
+                    return;
+                }
+                
+                // Sort messages by timestamp (newest first) with better date handling
+                userMessages.sort((a, b) => {
+                    const dateA = new Date(a.timestamp);
+                    const dateB = new Date(b.timestamp);
+                    return dateB - dateA;
+                });
+                
+                // Display messages
+                userMessages.forEach((message, index) => {
+                    const messageItem = document.createElement('div');
+                    messageItem.className = 'message-item';
+                    
+                    const sender = message.senderId ? appData.users.find(u => u.id === message.senderId) : null;
+                    const senderName = sender ? sender.username : 'Anonymous';
+                    
+                    const date = new Date(message.timestamp);
+                    const formattedDate = isNaN(date.getTime()) ? 'Invalid date' : date.toLocaleString();
+                    
+                    messageItem.innerHTML = `
+                        <div class="message-header">
+                            <span class="message-sender">${senderName}</span>
+                            <span>${formattedDate}</span>
+                        </div>
+                        <div class="message-content">${message.content}</div>
+                    `;
+                    
+                    // Add animation with delay
+                    messageItem.style.animationDelay = `${index * 0.1}s`;
+                    messageItem.classList.add('fade-in');
+                    
+                    messageList.appendChild(messageItem);
+                });
+                
+                // Update messages received stat
+                appData.stats.messagesReceived = userMessages.length;
+                saveData(appData);
+                updateStats();
+            } catch (error) {
+                console.error('Error loading messages:', error);
+                showNotification('Error loading messages. Please refresh the page.', 'error');
             }
-            
-            const messageList = document.getElementById('message-list');
-            messageList.innerHTML = '';
-            
-            // Get messages for current user
-            const userMessages = appData.messages.filter(m => m.recipientId === currentUser.id);
-            
-            if (userMessages.length === 0) {
-                messageList.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">No messages yet.</p>';
-                return;
-            }
-            
-            // Sort messages by timestamp (newest first) with better date handling
-            userMessages.sort((a, b) => {
-                const dateA = new Date(a.timestamp);
-                const dateB = new Date(b.timestamp);
-                return dateB - dateA;
-            });
-            
-            // Display messages
-            userMessages.forEach((message, index) => {
-                const messageItem = document.createElement('div');
-                messageItem.className = 'message-item';
-                
-                const sender = message.senderId ? appData.users.find(u => u.id === message.senderId) : null;
-                const senderName = sender ? sender.username : 'Anonymous';
-                
-                const date = new Date(message.timestamp);
-                const formattedDate = isNaN(date.getTime()) ? 'Invalid date' : date.toLocaleString();
-                
-                messageItem.innerHTML = `
-                    <div class="message-header">
-                        <span class="message-sender">${senderName}</span>
-                        <span>${formattedDate}</span>
-                    </div>
-                    <div class="message-content">${message.content}</div>
-                `;
-                
-                // Add animation with delay
-                messageItem.style.animationDelay = `${index * 0.1}s`;
-                messageItem.classList.add('fade-in');
-                
-                messageList.appendChild(messageItem);
-            });
-            
-            // Update messages received stat
-            appData.stats.messagesReceived = userMessages.length;
-            saveData(appData);
-            updateStats();
         }
         
         // Update stats
         function updateStats() {
-            document.getElementById('messages-received').textContent = appData.stats.messagesReceived;
-            document.getElementById('messages-sent').textContent = appData.stats.messagesSent;
-            document.getElementById('profile-views').textContent = appData.stats.profileViews;
-            
-            // Simulate profile views increase
-            if (Math.random() > 0.7) {
-                appData.stats.profileViews++;
-                saveData(appData);
+            try {
+                document.getElementById('messages-received').textContent = appData.stats.messagesReceived;
+                document.getElementById('messages-sent').textContent = appData.stats.messagesSent;
+                document.getElementById('profile-views').textContent = appData.stats.profileViews;
+                
+                // Simulate profile views increase
+                if (Math.random() > 0.7) {
+                    appData.stats.profileViews++;
+                    saveData(appData);
+                }
+            } catch (error) {
+                console.error('Error updating stats:', error);
             }
         }
         
         // Copy link function - updated to use modern Clipboard API
         function copyLink() {
-            const linkInput = document.getElementById('user-link');
-            
-            if (navigator.clipboard) {
-                // Modern approach
-                navigator.clipboard.writeText(linkInput.value)
-                    .then(() => {
-                        showNotification('Link copied to clipboard!', 'success');
-                    })
-                    .catch(err => {
-                        // Fallback to older method
-                        linkInput.select();
-                        document.execCommand('copy');
-                        showNotification('Link copied to clipboard!', 'success');
-                    });
-            } else {
-                // Fallback for older browsers
-                linkInput.select();
-                document.execCommand('copy');
-                showNotification('Link copied to clipboard!', 'success');
+            try {
+                const linkInput = document.getElementById('user-link');
+                
+                if (navigator.clipboard) {
+                    // Modern approach
+                    navigator.clipboard.writeText(linkInput.value)
+                        .then(() => {
+                            showNotification('Link copied to clipboard!', 'success');
+                        })
+                        .catch(err => {
+                            // Fallback to older method
+                            linkInput.select();
+                            document.execCommand('copy');
+                            showNotification('Link copied to clipboard!', 'success');
+                        });
+                } else {
+                    // Fallback for older browsers
+                    linkInput.select();
+                    document.execCommand('copy');
+                    showNotification('Link copied to clipboard!', 'success');
+                }
+            } catch (error) {
+                console.error('Error copying link:', error);
+                showNotification('Error copying link. Please try again.', 'error');
             }
         }
         
         // Show notification - improved icon handling
         function showNotification(message, type) {
-            notificationText.textContent = message;
-            notification.className = `notification ${type}`;
-            notification.classList.add('show');
-            
-            // Update icon based on type
-            const icon = notification.querySelector('i');
-            if (icon) {
-                if (type === 'success') {
-                    icon.className = 'fas fa-check-circle';
-                } else if (type === 'error') {
-                    icon.className = 'fas fa-exclamation-circle';
-                } else if (type === 'warning') {
-                    icon.className = 'fas fa-exclamation-triangle';
+            try {
+                notificationText.textContent = message;
+                notification.className = `notification ${type}`;
+                notification.classList.add('show');
+                
+                // Update icon based on type
+                const icon = notification.querySelector('i');
+                if (icon) {
+                    if (type === 'success') {
+                        icon.className = 'fas fa-check-circle';
+                    } else if (type === 'error') {
+                        icon.className = 'fas fa-exclamation-circle';
+                    } else if (type === 'warning') {
+                        icon.className = 'fas fa-exclamation-triangle';
+                    }
                 }
+                
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                }, 3000);
+            } catch (error) {
+                console.error('Error showing notification:', error);
             }
-            
-            setTimeout(() => {
-                notification.classList.remove('show');
-            }, 3000);
         }
         
         // Show login form
         function showLoginForm() {
-            publicMessageForm.classList.add('hidden');
-            authView.classList.remove('hidden');
+            try {
+                publicMessageForm.classList.add('hidden');
+                authView.classList.remove('hidden');
+            } catch (error) {
+                console.error('Error showing login form:', error);
+            }
         }
         
         // Add some interactive animations
         document.addEventListener('DOMContentLoaded', () => {
-            // Add hover effect to buttons
-            const buttons = document.querySelectorAll('.btn');
-            buttons.forEach(button => {
-                button.addEventListener('mouseenter', () => {
-                    button.style.transform = 'translateY(-3px)';
+            try {
+                // Add hover effect to buttons
+                const buttons = document.querySelectorAll('.btn');
+                buttons.forEach(button => {
+                    button.addEventListener('mouseenter', () => {
+                        button.style.transform = 'translateY(-3px)';
+                    });
+                    
+                    button.addEventListener('mouseleave', () => {
+                        button.style.transform = 'translateY(0)';
+                    });
                 });
                 
-                button.addEventListener('mouseleave', () => {
-                    button.style.transform = 'translateY(0)';
-                });
-            });
-            
-            // Add floating animation to logo
-            const logo = document.querySelector('.logo');
-            if (logo) {
-                logo.classList.add('float');
+                // Add floating animation to logo
+                const logo = document.querySelector('.logo');
+                if (logo) {
+                    logo.classList.add('float');
+                }
+            } catch (error) {
+                console.error('Error adding animations:', error);
             }
         });
     </script>
