@@ -818,7 +818,7 @@
             {
                 title: "Perfect",
                 artist: "Ed Sheeran",
-                src: "music/perfect.mp3"  // Local file in the music folder
+                src: "music/Perfect.mp3"  // Local file in the music folder
             },
             {
                 title: "Thinking Out Loud",
