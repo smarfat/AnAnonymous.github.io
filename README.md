@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -706,7 +707,7 @@
         // Site configuration
         const siteConfig = {
             name: "An Anonymous",
-            domain: "ananonymous.com"
+            baseUrl: "https://smarfat.github.io/AnAnonymous.github.io"
         };
         
         // Mock database for demo purposes
@@ -745,6 +746,35 @@
         loginForm.addEventListener('submit', handleLogin);
         registerForm.addEventListener('submit', handleRegister);
         
+        // Function to extract username from URL path
+        function getUsernameFromPath() {
+            // For demo purposes, we'll check both URL parameters and path
+            // In a real application, you would use proper routing
+            
+            // Check for URL parameter first (for backward compatibility)
+            const urlParams = new URLSearchParams(window.location.search);
+            const paramUsername = urlParams.get('sendto');
+            if (paramUsername) {
+                return paramUsername;
+            }
+            
+            // Check for path-based username (e.g., /username)
+            const pathParts = window.location.pathname.split('/');
+            // Remove empty parts and index.html if present
+            const cleanParts = pathParts.filter(part => part && part !== 'index.html');
+            
+            // If we have a path part that could be a username
+            if (cleanParts.length > 0) {
+                const potentialUsername = cleanParts[cleanParts.length - 1];
+                // Check if it looks like a username (alphanumeric, may include underscores or hyphens)
+                if (/^[a-zA-Z0-9_-]+$/.test(potentialUsername)) {
+                    return potentialUsername;
+                }
+            }
+            
+            return null;
+        }
+        
         // Check URL parameters on page load
         window.addEventListener('DOMContentLoaded', () => {
             // Update page title
@@ -762,8 +792,8 @@
                 authTitle.innerHTML = `<i class="fas fa-user-secret"></i> ${siteConfig.name}`;
             }
             
-            const urlParams = new URLSearchParams(window.location.search);
-            const recipient = urlParams.get('sendto');
+            // Get username from URL
+            const recipient = getUsernameFromPath();
             
             if (recipient) {
                 // Check if recipient exists
@@ -875,7 +905,7 @@
             document.getElementById('user-avatar').textContent = currentUser.username.charAt(0).toUpperCase();
             
             // Generate and display user link with proper format
-            const userLink = `https://${siteConfig.domain}/${currentUser.username}`;
+            const userLink = `${siteConfig.baseUrl}/${currentUser.username}`;
             document.getElementById('user-link').value = userLink;
         }
         
