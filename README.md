@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -632,6 +631,33 @@
         .glow {
             box-shadow: 0 0 20px rgba(108, 99, 255, 0.6);
         }
+        /* Data Management Section */
+        .data-management {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+        .data-management-title {
+            font-size: 18px;
+            margin-bottom: 15px;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+        }
+        .data-buttons {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+        .data-info {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
     </style>
 </head>
 <body>
@@ -756,6 +782,25 @@
                             <div class="stat-value" id="profile-views">0</div>
                             <div class="stat-label">Profile Views</div>
                         </div>
+                    </div>
+                    
+                    <!-- Data Management Section -->
+                    <div class="data-management">
+                        <h3 class="data-management-title">
+                            <i class="fas fa-database"></i>
+                            Data Management
+                        </h3>
+                        <div class="data-buttons">
+                            <button class="btn btn-secondary" onclick="exportData()">
+                                <i class="fas fa-download"></i> Export Data
+                            </button>
+                            <button class="btn btn-secondary" onclick="importData()">
+                                <i class="fas fa-upload"></i> Import Data
+                            </button>
+                        </div>
+                        <p class="data-info">
+                            Export your data to back it up or import it to another device.
+                        </p>
                     </div>
                 </div>
                 
@@ -1040,9 +1085,46 @@
             return user;
         }
         
+        // Function to get user from URL token
+        function getUserFromToken() {
+            try {
+                const url = new URL(window.location.href);
+                const token = url.searchParams.get('token');
+                
+                if (token) {
+                    // In a real app, you would validate the token
+                    // For this demo, we'll assume the token is the user ID
+                    const userId = parseInt(token);
+                    const user = appData.users.find(u => u.id === userId);
+                    
+                    if (user) {
+                        return user;
+                    }
+                }
+                
+                return null;
+            } catch (error) {
+                console.error('Error getting user from token:', error);
+                return null;
+            }
+        }
+        
         // Check for saved user session on page load
         function checkUserSession() {
             try {
+                // First check for token in URL
+                const userFromToken = getUserFromToken();
+                if (userFromToken) {
+                    currentUser = userFromToken;
+                    // Save user session
+                    localStorage.setItem('anonyCurrentUserId', userFromToken.id);
+                    showAppView();
+                    loadMessages();
+                    updateStats();
+                    return true;
+                }
+                
+                // Then check localStorage
                 const savedUserId = localStorage.getItem('anonyCurrentUserId');
                 if (savedUserId) {
                     const userId = parseInt(savedUserId);
@@ -1448,6 +1530,77 @@
             } catch (error) {
                 console.error('Error copying link:', error);
                 showNotification('Error copying link. Please try again.', 'error');
+            }
+        }
+        
+        // Export data function
+        function exportData() {
+            try {
+                const data = {
+                    users: appData.users,
+                    messages: appData.messages,
+                    stats: appData.stats
+                };
+                const dataStr = JSON.stringify(data);
+                const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+                
+                const exportFileDefaultName = 'anony_data.json';
+                
+                const linkElement = document.createElement('a');
+                linkElement.setAttribute('href', dataUri);
+                linkElement.setAttribute('download', exportFileDefaultName);
+                linkElement.click();
+                
+                showNotification('Data exported successfully!', 'success');
+            } catch (error) {
+                console.error('Error exporting data:', error);
+                showNotification('Error exporting data. Please try again.', 'error');
+            }
+        }
+        
+        // Import data function
+        function importData() {
+            try {
+                const input = document.createElement('input');
+                input.type = 'file';
+                input.accept = '.json';
+                
+                input.onchange = e => {
+                    const file = e.target.files[0];
+                    const reader = new FileReader();
+                    
+                    reader.onload = event => {
+                        try {
+                            const data = JSON.parse(event.target.result);
+                            
+                            // Validate the imported data
+                            if (data.users && data.messages && data.stats) {
+                                appData = data;
+                                saveData(appData);
+                                
+                                // If the user is logged in, refresh the view
+                                if (currentUser) {
+                                    loadMessages();
+                                    updateStats();
+                                }
+                                
+                                showNotification('Data imported successfully!', 'success');
+                            } else {
+                                showNotification('Invalid data format. Please select a valid export file.', 'error');
+                            }
+                        } catch (error) {
+                            console.error('Error parsing imported data:', error);
+                            showNotification('Error parsing imported data. Please try again.', 'error');
+                        }
+                    };
+                    
+                    reader.readAsText(file);
+                };
+                
+                input.click();
+            } catch (error) {
+                console.error('Error importing data:', error);
+                showNotification('Error importing data. Please try again.', 'error');
             }
         }
         
