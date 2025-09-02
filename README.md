@@ -1,3 +1,4 @@
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -23,14 +24,12 @@
             --gradient-2: linear-gradient(135deg, #ff6b6b, #ff5252);
             --gradient-3: linear-gradient(135deg, #2ecc71, #27ae60);
         }
-
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Poppins', sans-serif;
         }
-
         body {
             background-color: var(--background-color);
             color: var(--text-color);
@@ -42,63 +41,51 @@
                 radial-gradient(circle at 50% 50%, rgba(46, 204, 113, 0.05) 0%, transparent 30%);
             background-attachment: fixed;
         }
-
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
         }
-
         /* Animations */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
         @keyframes slideIn {
             from { transform: translateX(-100%); }
             to { transform: translateX(0); }
         }
-
         @keyframes pulse {
             0% { transform: scale(1); }
             50% { transform: scale(1.05); }
             100% { transform: scale(1); }
         }
-
         @keyframes float {
             0% { transform: translateY(0px); }
             50% { transform: translateY(-10px); }
             100% { transform: translateY(0px); }
         }
-
         @keyframes gradient {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
-
         .fade-in {
             animation: fadeIn 0.5s ease forwards;
         }
-
         .slide-in {
             animation: slideIn 0.5s ease forwards;
         }
-
         .pulse {
             animation: pulse 2s infinite;
         }
-
         .float {
             animation: float 3s ease-in-out infinite;
         }
-
         .gradient-animation {
             background-size: 200% 200%;
             animation: gradient 3s ease infinite;
         }
-
         /* Header Styles */
         header {
             display: flex;
@@ -113,7 +100,6 @@
             z-index: 100;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
         }
-
         .logo {
             font-size: 28px;
             font-weight: 700;
@@ -125,7 +111,6 @@
             align-items: center;
             gap: 10px;
         }
-
         .logo i {
             font-size: 32px;
             background: var(--gradient-1);
@@ -133,13 +118,11 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-
         .user-info {
             display: flex;
             align-items: center;
             gap: 15px;
         }
-
         .user-avatar {
             width: 45px;
             height: 45px;
@@ -153,12 +136,10 @@
             box-shadow: 0 4px 15px rgba(108, 99, 255, 0.3);
             transition: all 0.3s ease;
         }
-
         .user-avatar:hover {
             transform: scale(1.1);
             box-shadow: 0 6px 20px rgba(108, 99, 255, 0.4);
         }
-
         .btn {
             padding: 12px 24px;
             border: none;
@@ -176,7 +157,6 @@
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
-
         .btn:before {
             content: '';
             position: absolute;
@@ -189,51 +169,42 @@
             transition: transform 0.3s ease;
             z-index: -1;
         }
-
         .btn:hover:before {
             transform: translateX(0);
         }
-
         .btn-primary {
             background: var(--gradient-1);
             color: white;
             box-shadow: 0 4px 15px rgba(108, 99, 255, 0.3);
         }
-
         .btn-primary:hover {
             transform: translateY(-3px);
             box-shadow: 0 6px 20px rgba(108, 99, 255, 0.4);
         }
-
         .btn-secondary {
             background-color: transparent;
             color: var(--primary-color);
             border: 2px solid var(--primary-color);
         }
-
         .btn-secondary:hover {
             background-color: rgba(108, 99, 255, 0.1);
             transform: translateY(-3px);
         }
-
         .btn-accent {
             background: var(--gradient-2);
             color: white;
             box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
         }
-
         .btn-accent:hover {
             transform: translateY(-3px);
             box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
         }
-
         /* Main Content */
         .main-content {
             display: flex;
             margin-top: 30px;
             gap: 30px;
         }
-
         .left-panel, .right-panel {
             flex: 1;
             background-color: var(--card-color);
@@ -243,13 +214,11 @@
             transition: all 0.3s ease;
             border: 1px solid rgba(108, 99, 255, 0.1);
         }
-
         .left-panel:hover, .right-panel:hover {
             box-shadow: var(--shadow-hover);
             transform: translateY(-8px);
             border: 1px solid rgba(108, 99, 255, 0.2);
         }
-
         .panel-title {
             font-size: 24px;
             margin-bottom: 25px;
@@ -262,7 +231,6 @@
             gap: 12px;
             font-weight: 700;
         }
-
         .panel-title i {
             font-size: 28px;
             background: var(--gradient-1);
@@ -270,12 +238,10 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-
         /* Form Styles */
         .form-group {
             margin-bottom: 25px;
         }
-
         .form-group label {
             display: block;
             margin-bottom: 10px;
@@ -283,7 +249,6 @@
             color: var(--text-secondary);
             font-size: 16px;
         }
-
         .form-control {
             width: 100%;
             padding: 15px 20px;
@@ -293,19 +258,16 @@
             transition: all 0.3s ease;
             background-color: rgba(248, 249, 250, 0.5);
         }
-
         .form-control:focus {
             outline: none;
             border-color: var(--primary-color);
             box-shadow: 0 0 0 4px rgba(108, 99, 255, 0.1);
             background-color: white;
         }
-
         textarea.form-control {
             resize: vertical;
             min-height: 140px;
         }
-
         /* Message List */
         .message-list {
             margin-top: 25px;
@@ -313,25 +275,20 @@
             overflow-y: auto;
             padding-right: 10px;
         }
-
         .message-list::-webkit-scrollbar {
             width: 6px;
         }
-
         .message-list::-webkit-scrollbar-track {
             background: rgba(0, 0, 0, 0.05);
             border-radius: 10px;
         }
-
         .message-list::-webkit-scrollbar-thumb {
             background: rgba(108, 99, 255, 0.3);
             border-radius: 10px;
         }
-
         .message-list::-webkit-scrollbar-thumb:hover {
             background: rgba(108, 99, 255, 0.5);
         }
-
         .message-item {
             padding: 20px;
             border-radius: 15px;
@@ -343,12 +300,10 @@
             overflow: hidden;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.03);
         }
-
         .message-item:hover {
             transform: translateX(8px);
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
         }
-
         .message-item:before {
             content: '';
             position: absolute;
@@ -361,7 +316,6 @@
             border-radius: 50%;
             transform: translate(30px, -30px);
         }
-
         .message-header {
             display: flex;
             justify-content: space-between;
@@ -369,18 +323,15 @@
             font-size: 14px;
             color: var(--text-secondary);
         }
-
         .message-sender {
             font-weight: 700;
             color: var(--primary-color);
             font-size: 16px;
         }
-
         .message-content {
             font-size: 16px;
             line-height: 1.6;
         }
-
         /* Authentication Styles */
         .auth-container {
             display: flex;
@@ -388,7 +339,6 @@
             align-items: center;
             min-height: 80vh;
         }
-
         .auth-card {
             width: 100%;
             max-width: 500px;
@@ -400,7 +350,6 @@
             overflow: hidden;
             border: 1px solid rgba(108, 99, 255, 0.1);
         }
-
         .auth-card:before {
             content: '';
             position: absolute;
@@ -410,7 +359,6 @@
             height: 8px;
             background: var(--gradient-1);
         }
-
         .auth-title {
             text-align: center;
             margin-bottom: 40px;
@@ -421,14 +369,12 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-
         .auth-subtitle {
             text-align: center;
             margin-bottom: 40px;
             color: var(--text-secondary);
             font-size: 18px;
         }
-
         .auth-tabs {
             display: flex;
             margin-bottom: 40px;
@@ -437,7 +383,6 @@
             padding: 8px;
             box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06);
         }
-
         .auth-tab {
             flex: 1;
             padding: 15px;
@@ -449,22 +394,18 @@
             font-size: 16px;
             color: var(--text-secondary);
         }
-
         .auth-tab.active {
             background: var(--gradient-1);
             color: white;
             box-shadow: 0 4px 15px rgba(108, 99, 255, 0.3);
         }
-
         .auth-form {
             display: none;
         }
-
         .auth-form.active {
             display: block;
             animation: fadeIn 0.5s ease forwards;
         }
-
         /* Notification Styles */
         .notification {
             position: fixed;
@@ -483,27 +424,21 @@
             max-width: 400px;
             font-weight: 500;
         }
-
         .notification.show {
             transform: translateX(0);
         }
-
         .notification.success {
             background: var(--gradient-3);
         }
-
         .notification.error {
             background: var(--gradient-2);
         }
-
         .notification.warning {
             background: var(--gradient-1);
         }
-
         .notification i {
             font-size: 24px;
         }
-
         /* Stats Section */
         .stats-container {
             display: flex;
@@ -511,7 +446,6 @@
             margin-top: 30px;
             gap: 20px;
         }
-
         .stat-card {
             flex: 1;
             background-color: var(--background-color);
@@ -521,13 +455,11 @@
             transition: all 0.3s ease;
             border: 1px solid rgba(108, 99, 255, 0.1);
         }
-
         .stat-card:hover {
             transform: translateY(-8px);
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
             border: 1px solid rgba(108, 99, 255, 0.2);
         }
-
         .stat-value {
             font-size: 32px;
             font-weight: 800;
@@ -537,13 +469,11 @@
             background-clip: text;
             margin-bottom: 5px;
         }
-
         .stat-label {
             font-size: 16px;
             color: var(--text-secondary);
             font-weight: 500;
         }
-
         /* Public Message Form */
         .public-message-form {
             background-color: var(--card-color);
@@ -555,12 +485,10 @@
             text-align: center;
             border: 1px solid rgba(108, 99, 255, 0.1);
         }
-
         .public-message-form .panel-title {
             font-size: 32px;
             margin-bottom: 30px;
         }
-
         .public-recipient {
             font-size: 32px;
             font-weight: 700;
@@ -576,13 +504,11 @@
             min-width: 200px;
             border: 2px dashed rgba(108, 99, 255, 0.3);
         }
-
         /* Feature Cards */
         .features-section {
             margin-top: 60px;
             text-align: center;
         }
-
         .features-title {
             font-size: 32px;
             font-weight: 700;
@@ -592,14 +518,12 @@
             background-clip: text;
             margin-bottom: 50px;
         }
-
         .features-container {
             display: flex;
             justify-content: center;
             gap: 30px;
             flex-wrap: wrap;
         }
-
         .feature-card {
             flex: 1;
             min-width: 250px;
@@ -611,13 +535,11 @@
             transition: all 0.3s ease;
             border: 1px solid rgba(108, 99, 255, 0.1);
         }
-
         .feature-card:hover {
             transform: translateY(-10px);
             box-shadow: var(--shadow-hover);
             border: 1px solid rgba(108, 99, 255, 0.2);
         }
-
         .feature-icon {
             font-size: 48px;
             background: var(--gradient-1);
@@ -626,19 +548,16 @@
             background-clip: text;
             margin-bottom: 20px;
         }
-
         .feature-title {
             font-size: 22px;
             font-weight: 600;
             margin-bottom: 15px;
             color: var(--text-color);
         }
-
         .feature-description {
             color: var(--text-secondary);
             line-height: 1.6;
         }
-
         /* Footer */
         .footer {
             margin-top: 80px;
@@ -647,30 +566,25 @@
             border-top: 1px solid var(--border-color);
             color: var(--text-secondary);
         }
-
         .footer-links {
             display: flex;
             justify-content: center;
             gap: 30px;
             margin-bottom: 20px;
         }
-
         .footer-links a {
             color: var(--primary-color);
             text-decoration: none;
             font-weight: 500;
             transition: all 0.3s ease;
         }
-
         .footer-links a:hover {
             color: var(--secondary-color);
         }
-
         /* Hidden Elements */
         .hidden {
             display: none;
         }
-
         /* Responsive Design */
         @media (max-width: 768px) {
             .main-content {
@@ -700,7 +614,6 @@
                 gap: 15px;
             }
         }
-
         /* Loading Animation */
         .loader {
             width: 50px;
@@ -711,12 +624,10 @@
             animation: spin 1s linear infinite;
             margin: 20px auto;
         }
-
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-
         /* Glow Effect */
         .glow {
             box-shadow: 0 0 20px rgba(108, 99, 255, 0.6);
@@ -766,6 +677,7 @@
                     <div class="form-group">
                         <label for="register-password">Password</label>
                         <input type="password" id="register-password" class="form-control" placeholder="Create a password" required>
+                        <small style="color: var(--text-secondary); margin-top: 5px; display: block;">Password must be at least 6 characters</small>
                     </div>
                     <button type="submit" class="btn btn-primary" style="width: 100%;">
                         <i class="fas fa-user-plus"></i> Register
@@ -1032,40 +944,69 @@
         loginForm.addEventListener('submit', handleLogin);
         registerForm.addEventListener('submit', handleRegister);
         
-        // Function to extract username from URL
+        // Function to extract username from URL - improved for mobile
         function getUsernameFromURL() {
+            let username = null;
+            
             // Check for URL parameter first
             const urlParams = new URLSearchParams(window.location.search);
             const paramUsername = urlParams.get('sendto');
             if (paramUsername) {
-                return paramUsername;
+                username = paramUsername;
             }
             
             // Check for hash-based username (e.g., #/username)
-            const hash = window.location.hash;
-            if (hash && hash.length > 1) {
-                const hashUsername = hash.substring(1); // Remove the #
-                // Check if it looks like a username
-                if (/^[a-zA-Z0-9_-]+$/.test(hashUsername)) {
-                    return hashUsername;
+            if (!username) {
+                const hash = window.location.hash;
+                if (hash && hash.length > 1) {
+                    const hashUsername = hash.substring(1); // Remove the #
+                    // Check if it looks like a username
+                    if (/^[a-zA-Z0-9_-]+$/.test(hashUsername)) {
+                        username = hashUsername;
+                    }
                 }
             }
             
             // Try to extract from path (for GitHub Pages custom 404 page)
-            const pathParts = window.location.pathname.split('/');
-            // Remove empty parts and index.html if present
-            const cleanParts = pathParts.filter(part => part && part !== 'index.html');
-            
-            // If we have a path part that could be a username
-            if (cleanParts.length > 0) {
-                const potentialUsername = cleanParts[cleanParts.length - 1];
-                // Check if it looks like a username (alphanumeric, may include underscores or hyphens)
-                if (/^[a-zA-Z0-9_-]+$/.test(potentialUsername)) {
-                    return potentialUsername;
+            if (!username) {
+                const pathParts = window.location.pathname.split('/');
+                // Remove empty parts and index.html if present
+                const cleanParts = pathParts.filter(part => part && part !== 'index.html');
+                
+                // If we have a path part that could be a username
+                if (cleanParts.length > 0) {
+                    const potentialUsername = cleanParts[cleanParts.length - 1];
+                    // Check if it looks like a username (alphanumeric, may include underscores or hyphens)
+                    if (/^[a-zA-Z0-9_-]+$/.test(potentialUsername)) {
+                        username = potentialUsername;
+                    }
                 }
             }
             
-            return null;
+            // For mobile: check if the URL contains the baseUrl followed by a username
+            if (!username && window.location.href.includes(siteConfig.baseUrl)) {
+                const urlParts = window.location.href.split('/');
+                const baseUrlParts = siteConfig.baseUrl.split('/');
+                
+                // Find where the baseUrl ends in the URL
+                let startIndex = -1;
+                for (let i = 0; i < baseUrlParts.length; i++) {
+                    if (urlParts[i] !== baseUrlParts[i]) {
+                        startIndex = i;
+                        break;
+                    }
+                }
+                
+                // If we found the baseUrl, check the next part for a username
+                if (startIndex === -1 && urlParts.length > baseUrlParts.length) {
+                    const potentialUsername = urlParts[baseUrlParts.length];
+                    if (/^[a-zA-Z0-9_-]+$/.test(potentialUsername)) {
+                        username = potentialUsername;
+                    }
+                }
+            }
+            
+            return username;
         }
         
         // Function to get or create a user by username
@@ -1088,6 +1029,22 @@
             return user;
         }
         
+        // Check for saved user session on page load
+        function checkUserSession() {
+            const savedUserId = localStorage.getItem('anonyCurrentUserId');
+            if (savedUserId) {
+                const userId = parseInt(savedUserId);
+                currentUser = appData.users.find(u => u.id === userId);
+                if (currentUser) {
+                    showAppView();
+                    loadMessages();
+                    updateStats();
+                    return true;
+                }
+            }
+            return false;
+        }
+        
         // Check URL parameters on page load
         window.addEventListener('DOMContentLoaded', () => {
             // Update page title
@@ -1103,6 +1060,11 @@
             const authTitle = document.querySelector('.auth-title');
             if (authTitle) {
                 authTitle.innerHTML = `<i class="fas fa-user-secret"></i> ${siteConfig.name}`;
+            }
+            
+            // Check for saved user session first
+            if (checkUserSession()) {
+                return;
             }
             
             // Get username from URL
@@ -1141,15 +1103,15 @@
             const email = document.getElementById('login-email').value;
             const password = document.getElementById('login-password').value;
             
-            console.log("Login attempt with:", email, password);
-            console.log("Available users:", appData.users);
-            
             // Find user in database
             const user = appData.users.find(u => u.email === email && u.password === password);
             
             if (user) {
-                console.log("User found:", user);
                 currentUser = user;
+                
+                // Save user session
+                localStorage.setItem('anonyCurrentUserId', user.id);
+                
                 showNotification('Login successful!', 'success');
                 showAppView();
                 loadMessages();
@@ -1162,7 +1124,6 @@
                     sessionStorage.removeItem('recipient');
                 }
             } else {
-                console.log("User not found");
                 showNotification('Invalid email or password', 'error');
             }
         }
@@ -1174,6 +1135,12 @@
             const username = document.getElementById('register-username').value;
             const email = document.getElementById('register-email').value;
             const password = document.getElementById('register-password').value;
+            
+            // Password validation
+            if (password.length < 6) {
+                showNotification('Password must be at least 6 characters long', 'error');
+                return;
+            }
             
             // Check if user already exists
             const userExists = appData.users.some(u => u.email === email || u.username === username);
@@ -1195,6 +1162,9 @@
             saveData(appData);
             currentUser = newUser;
             
+            // Save user session
+            localStorage.setItem('anonyCurrentUserId', newUser.id);
+            
             showNotification('Registration successful!', 'success');
             showAppView();
             loadMessages();
@@ -1203,7 +1173,6 @@
         
         // Show app view after login
         function showAppView() {
-            console.log("Showing app view for user:", currentUser);
             authView.classList.add('hidden');
             publicMessageForm.classList.add('hidden');
             appView.classList.remove('hidden');
@@ -1215,13 +1184,12 @@
             // Generate and display user link with proper format
             const userLink = `${siteConfig.baseUrl}/?sendto=${currentUser.username}`;
             document.getElementById('user-link').value = userLink;
-            
-            console.log("App view should now be visible");
         }
         
         // Logout function
         function logout() {
             currentUser = null;
+            localStorage.removeItem('anonyCurrentUserId');
             appView.classList.add('hidden');
             authView.classList.remove('hidden');
             
@@ -1233,15 +1201,15 @@
             showNotification('You have been logged out', 'success');
         }
         
-        // Send message function
+        // Send message function - fixed
         function sendMessage() {
             if (!currentUser) {
                 showNotification('You must be logged in to send messages', 'error');
                 return;
             }
             
-            const recipientUsername = document.getElementById('recipient').value;
-            const messageContent = document.getElementById('message').value;
+            const recipientUsername = document.getElementById('recipient').value.trim();
+            const messageContent = document.getElementById('message').value.trim();
             
             if (!recipientUsername || !messageContent) {
                 showNotification('Please fill in all fields', 'error');
@@ -1290,7 +1258,7 @@
         // Send public message function
         function sendPublicMessage() {
             const recipientUsername = document.getElementById('public-recipient').textContent;
-            const messageContent = document.getElementById('public-message').value;
+            const messageContent = document.getElementById('public-message').value.trim();
             
             if (!messageContent) {
                 showNotification('Please enter a message', 'error');
@@ -1328,11 +1296,8 @@
         // Load messages for current user
         function loadMessages() {
             if (!currentUser) {
-                console.log("No current user to load messages for");
                 return;
             }
-            
-            console.log("Loading messages for user:", currentUser.username);
             
             const messageList = document.getElementById('message-list');
             messageList.innerHTML = '';
@@ -1340,15 +1305,17 @@
             // Get messages for current user
             const userMessages = appData.messages.filter(m => m.recipientId === currentUser.id);
             
-            console.log("Found messages:", userMessages);
-            
             if (userMessages.length === 0) {
                 messageList.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">No messages yet.</p>';
                 return;
             }
             
-            // Sort messages by timestamp (newest first)
-            userMessages.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+            // Sort messages by timestamp (newest first) with better date handling
+            userMessages.sort((a, b) => {
+                const dateA = new Date(a.timestamp);
+                const dateB = new Date(b.timestamp);
+                return dateB - dateA;
+            });
             
             // Display messages
             userMessages.forEach((message, index) => {
@@ -1359,7 +1326,7 @@
                 const senderName = sender ? sender.username : 'Anonymous';
                 
                 const date = new Date(message.timestamp);
-                const formattedDate = date.toLocaleString();
+                const formattedDate = isNaN(date.getTime()) ? 'Invalid date' : date.toLocaleString();
                 
                 messageItem.innerHTML = `
                     <div class="message-header">
@@ -1395,15 +1362,31 @@
             }
         }
         
-        // Copy link function
+        // Copy link function - updated to use modern Clipboard API
         function copyLink() {
             const linkInput = document.getElementById('user-link');
-            linkInput.select();
-            document.execCommand('copy');
-            showNotification('Link copied to clipboard!', 'success');
+            
+            if (navigator.clipboard) {
+                // Modern approach
+                navigator.clipboard.writeText(linkInput.value)
+                    .then(() => {
+                        showNotification('Link copied to clipboard!', 'success');
+                    })
+                    .catch(err => {
+                        // Fallback to older method
+                        linkInput.select();
+                        document.execCommand('copy');
+                        showNotification('Link copied to clipboard!', 'success');
+                    });
+            } else {
+                // Fallback for older browsers
+                linkInput.select();
+                document.execCommand('copy');
+                showNotification('Link copied to clipboard!', 'success');
+            }
         }
         
-        // Show notification
+        // Show notification - improved icon handling
         function showNotification(message, type) {
             notificationText.textContent = message;
             notification.className = `notification ${type}`;
@@ -1411,12 +1394,14 @@
             
             // Update icon based on type
             const icon = notification.querySelector('i');
-            if (type === 'success') {
-                icon.className = 'fas fa-check-circle';
-            } else if (type === 'error') {
-                icon.className = 'fas fa-exclamation-circle';
-            } else if (type === 'warning') {
-                icon.className = 'fas fa-exclamation-triangle';
+            if (icon) {
+                if (type === 'success') {
+                    icon.className = 'fas fa-check-circle';
+                } else if (type === 'error') {
+                    icon.className = 'fas fa-exclamation-circle';
+                } else if (type === 'warning') {
+                    icon.className = 'fas fa-exclamation-triangle';
+                }
             }
             
             setTimeout(() => {
