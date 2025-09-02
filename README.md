@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -50,6 +51,24 @@
             animation: fadeInDown 1.5s ease;
             max-width: 800px;
             margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header-content::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 70%);
+            animation: shimmer 15s infinite linear;
+        }
+
+        @keyframes shimmer {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         .header-title {
@@ -57,6 +76,8 @@
             margin-bottom: 20px;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
             animation: fadeInDown 1.5s ease;
+            position: relative;
+            z-index: 2;
         }
 
         .header-subtitle {
@@ -64,6 +85,8 @@
             margin-bottom: 30px;
             opacity: 0.9;
             animation: fadeInUp 1.5s ease;
+            position: relative;
+            z-index: 2;
         }
 
         .header-quote {
@@ -72,6 +95,44 @@
             opacity: 0.8;
             margin-top: 20px;
             animation: fadeIn 2s ease;
+            position: relative;
+            z-index: 2;
+        }
+
+        .header-decoration {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .corner-heart {
+            position: absolute;
+            color: rgba(255, 68, 88, 0.3);
+            font-size: 2rem;
+        }
+
+        .corner-heart.top-left {
+            top: 10px;
+            left: 10px;
+        }
+
+        .corner-heart.top-right {
+            top: 10px;
+            right: 10px;
+        }
+
+        .corner-heart.bottom-left {
+            bottom: 10px;
+            left: 10px;
+        }
+
+        .corner-heart.bottom-right {
+            bottom: 10px;
+            right: 10px;
         }
 
         @keyframes fadeInDown {
@@ -583,6 +644,12 @@
     <div class="container">
         <header>
             <div class="header-content">
+                <div class="header-decoration">
+                    <div class="corner-heart top-left"><i class="fas fa-heart"></i></div>
+                    <div class="corner-heart top-right"><i class="fas fa-heart"></i></div>
+                    <div class="corner-heart bottom-left"><i class="fas fa-heart"></i></div>
+                    <div class="corner-heart bottom-right"><i class="fas fa-heart"></i></div>
+                </div>
                 <h1 class="header-title">A Love Beyond Distance <span class="heart"><i class="fas fa-heart"></i></span></h1>
                 <p class="header-subtitle">From Syed Mohammad Arfatur Rahman to Syeda Komol Hoque Ilma</p>
                 <p class="header-quote">"Distance means so little when someone means so much"</p>
@@ -717,7 +784,7 @@
 
         <footer>
             <p>Made with <span class="footer-heart"><i class="fas fa-heart"></i></span> by Syed Mohammad Arfatur Rahman for Syeda Komol Hoque Ilma</p>
-            <p>© 2025 Our Love Story | Bridging Distances with Love</p>
+            <p>© 2023 Our Love Story | Bridging Distances with Love</p>
         </footer>
     </div>
 
