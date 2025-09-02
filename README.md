@@ -140,7 +140,7 @@
             align-items: center;
             gap: 15px;
         }
-
+ 
         .user-avatar {
             width: 45px;
             height: 45px;
