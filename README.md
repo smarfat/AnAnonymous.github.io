@@ -912,7 +912,7 @@
                     <a href="#">Terms of Service</a>
                     <a href="#">Contact</a>
                 </div>
-                <p>&copy; 2023 An Anonymous. All rights reserved.</p>
+                <p>&copy; 2025 All rights reserved by S. M. Arfatur Rahman</p>
             </div>
         </div>
         
