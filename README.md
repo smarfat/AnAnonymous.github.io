@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -20,6 +19,9 @@
             --border-color: #e1e4e8;
             --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             --shadow-hover: 0 15px 35px rgba(0, 0, 0, 0.15);
+            --gradient-1: linear-gradient(135deg, #6c63ff, #4a45b9);
+            --gradient-2: linear-gradient(135deg, #ff6b6b, #ff5252);
+            --gradient-3: linear-gradient(135deg, #2ecc71, #27ae60);
         }
 
         * {
@@ -34,6 +36,11 @@
             color: var(--text-color);
             line-height: 1.6;
             overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(108, 99, 255, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(255, 107, 107, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 50% 50%, rgba(46, 204, 113, 0.05) 0%, transparent 30%);
+            background-attachment: fixed;
         }
 
         .container {
@@ -65,6 +72,12 @@
             100% { transform: translateY(0px); }
         }
 
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
         .fade-in {
             animation: fadeIn 0.5s ease forwards;
         }
@@ -81,6 +94,11 @@
             animation: float 3s ease-in-out infinite;
         }
 
+        .gradient-animation {
+            background-size: 200% 200%;
+            animation: gradient 3s ease infinite;
+        }
+
         /* Header Styles */
         header {
             display: flex;
@@ -90,23 +108,30 @@
             border-bottom: 1px solid var(--border-color);
             position: sticky;
             top: 0;
-            background-color: var(--background-color);
-            z-index: 100;
-            backdrop-filter: blur(10px);
             background-color: rgba(248, 249, 250, 0.9);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
         }
 
         .logo {
-            font-size: 24px;
+            font-size: 28px;
             font-weight: 700;
-            color: var(--primary-color);
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             display: flex;
             align-items: center;
             gap: 10px;
         }
 
         .logo i {
-            font-size: 28px;
+            font-size: 32px;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .user-info {
@@ -116,36 +141,40 @@
         }
 
         .user-avatar {
-            width: 40px;
-            height: 40px;
+            width: 45px;
+            height: 45px;
             border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            background: var(--gradient-1);
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
             font-weight: bold;
-            box-shadow: 0 4px 8px rgba(108, 99, 255, 0.3);
-            transition: transform 0.3s ease;
+            box-shadow: 0 4px 15px rgba(108, 99, 255, 0.3);
+            transition: all 0.3s ease;
         }
 
         .user-avatar:hover {
             transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(108, 99, 255, 0.4);
         }
 
         .btn {
-            padding: 10px 20px;
+            padding: 12px 24px;
             border: none;
             border-radius: 30px;
             cursor: pointer;
-            font-weight: 500;
+            font-weight: 600;
+            font-size: 16px;
             transition: all 0.3s ease;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
             position: relative;
             overflow: hidden;
             z-index: 1;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .btn:before {
@@ -166,35 +195,35 @@
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            background: var(--gradient-1);
             color: white;
             box-shadow: 0 4px 15px rgba(108, 99, 255, 0.3);
         }
 
         .btn-primary:hover {
-            transform: translateY(-2px);
+            transform: translateY(-3px);
             box-shadow: 0 6px 20px rgba(108, 99, 255, 0.4);
         }
 
         .btn-secondary {
             background-color: transparent;
             color: var(--primary-color);
-            border: 1px solid var(--primary-color);
+            border: 2px solid var(--primary-color);
         }
 
         .btn-secondary:hover {
             background-color: rgba(108, 99, 255, 0.1);
-            transform: translateY(-2px);
+            transform: translateY(-3px);
         }
 
         .btn-accent {
-            background: linear-gradient(135deg, var(--accent-color), #ff5252);
+            background: var(--gradient-2);
             color: white;
             box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
         }
 
         .btn-accent:hover {
-            transform: translateY(-2px);
+            transform: translateY(-3px);
             box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
         }
 
@@ -208,101 +237,148 @@
         .left-panel, .right-panel {
             flex: 1;
             background-color: var(--card-color);
-            border-radius: 15px;
-            padding: 25px;
+            border-radius: 20px;
+            padding: 30px;
             box-shadow: var(--shadow);
             transition: all 0.3s ease;
+            border: 1px solid rgba(108, 99, 255, 0.1);
         }
 
         .left-panel:hover, .right-panel:hover {
             box-shadow: var(--shadow-hover);
-            transform: translateY(-5px);
+            transform: translateY(-8px);
+            border: 1px solid rgba(108, 99, 255, 0.2);
         }
 
         .panel-title {
-            font-size: 20px;
-            margin-bottom: 20px;
-            color: var(--primary-color);
+            font-size: 24px;
+            margin-bottom: 25px;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             display: flex;
             align-items: center;
-            gap: 10px;
-            font-weight: 600;
+            gap: 12px;
+            font-weight: 700;
         }
 
         .panel-title i {
-            font-size: 24px;
+            font-size: 28px;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         /* Form Styles */
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
+            margin-bottom: 10px;
+            font-weight: 600;
             color: var(--text-secondary);
+            font-size: 16px;
         }
 
         .form-control {
             width: 100%;
-            padding: 12px 15px;
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
+            padding: 15px 20px;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
             font-size: 16px;
             transition: all 0.3s ease;
+            background-color: rgba(248, 249, 250, 0.5);
         }
 
         .form-control:focus {
             outline: none;
             border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.1);
+            box-shadow: 0 0 0 4px rgba(108, 99, 255, 0.1);
+            background-color: white;
         }
 
         textarea.form-control {
             resize: vertical;
-            min-height: 120px;
+            min-height: 140px;
         }
 
         /* Message List */
         .message-list {
-            margin-top: 20px;
+            margin-top: 25px;
             max-height: 400px;
             overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .message-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .message-list::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 10px;
+        }
+
+        .message-list::-webkit-scrollbar-thumb {
+            background: rgba(108, 99, 255, 0.3);
+            border-radius: 10px;
+        }
+
+        .message-list::-webkit-scrollbar-thumb:hover {
+            background: rgba(108, 99, 255, 0.5);
         }
 
         .message-item {
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 15px;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
             background-color: var(--background-color);
-            border-left: 4px solid var(--primary-color);
+            border-left: 5px solid var(--primary-color);
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.03);
         }
 
         .message-item:hover {
-            transform: translateX(5px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transform: translateX(8px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        .message-item:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100px;
+            height: 100px;
+            background: var(--gradient-1);
+            opacity: 0.05;
+            border-radius: 50%;
+            transform: translate(30px, -30px);
         }
 
         .message-header {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 8px;
+            margin-bottom: 12px;
             font-size: 14px;
             color: var(--text-secondary);
         }
 
         .message-sender {
-            font-weight: 600;
+            font-weight: 700;
             color: var(--primary-color);
+            font-size: 16px;
         }
 
         .message-content {
             font-size: 16px;
+            line-height: 1.6;
         }
 
         /* Authentication Styles */
@@ -315,13 +391,14 @@
 
         .auth-card {
             width: 100%;
-            max-width: 450px;
+            max-width: 500px;
             background-color: var(--card-color);
-            border-radius: 20px;
-            padding: 40px;
+            border-radius: 25px;
+            padding: 50px;
             box-shadow: var(--shadow);
             position: relative;
             overflow: hidden;
+            border: 1px solid rgba(108, 99, 255, 0.1);
         }
 
         .auth-card:before {
@@ -330,47 +407,53 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 5px;
-            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            height: 8px;
+            background: var(--gradient-1);
         }
 
         .auth-title {
             text-align: center;
-            margin-bottom: 30px;
-            color: var(--primary-color);
-            font-size: 28px;
+            margin-bottom: 40px;
+            font-size: 36px;
             font-weight: 700;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .auth-subtitle {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
             color: var(--text-secondary);
-            font-size: 16px;
+            font-size: 18px;
         }
 
         .auth-tabs {
             display: flex;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
             background-color: var(--background-color);
-            border-radius: 10px;
-            padding: 5px;
+            border-radius: 15px;
+            padding: 8px;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06);
         }
 
         .auth-tab {
             flex: 1;
-            padding: 12px;
+            padding: 15px;
             text-align: center;
             cursor: pointer;
-            border-radius: 8px;
+            border-radius: 12px;
             transition: all 0.3s ease;
-            font-weight: 500;
+            font-weight: 600;
+            font-size: 16px;
+            color: var(--text-secondary);
         }
 
         .auth-tab.active {
-            background-color: var(--primary-color);
+            background: var(--gradient-1);
             color: white;
-            box-shadow: 0 2px 10px rgba(108, 99, 255, 0.3);
+            box-shadow: 0 4px 15px rgba(108, 99, 255, 0.3);
         }
 
         .auth-form {
@@ -385,10 +468,10 @@
         /* Notification Styles */
         .notification {
             position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 15px 25px;
-            border-radius: 10px;
+            top: 30px;
+            right: 30px;
+            padding: 20px 30px;
+            border-radius: 15px;
             color: white;
             box-shadow: var(--shadow);
             z-index: 1000;
@@ -396,8 +479,9 @@
             transition: transform 0.3s ease-in-out;
             display: flex;
             align-items: center;
-            gap: 10px;
-            max-width: 350px;
+            gap: 15px;
+            max-width: 400px;
+            font-weight: 500;
         }
 
         .notification.show {
@@ -405,67 +489,181 @@
         }
 
         .notification.success {
-            background: linear-gradient(135deg, var(--success-color), #27ae60);
+            background: var(--gradient-3);
         }
 
         .notification.error {
-            background: linear-gradient(135deg, var(--accent-color), #e74c3c);
+            background: var(--gradient-2);
         }
 
         .notification.warning {
-            background: linear-gradient(135deg, var(--warning-color), #e67e22);
+            background: var(--gradient-1);
+        }
+
+        .notification i {
+            font-size: 24px;
         }
 
         /* Stats Section */
         .stats-container {
             display: flex;
             justify-content: space-between;
-            margin-top: 20px;
-            gap: 15px;
+            margin-top: 30px;
+            gap: 20px;
         }
 
         .stat-card {
             flex: 1;
             background-color: var(--background-color);
-            border-radius: 10px;
-            padding: 15px;
+            border-radius: 15px;
+            padding: 25px 15px;
             text-align: center;
             transition: all 0.3s ease;
+            border: 1px solid rgba(108, 99, 255, 0.1);
         }
 
         .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transform: translateY(-8px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(108, 99, 255, 0.2);
         }
 
         .stat-value {
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--primary-color);
+            font-size: 32px;
+            font-weight: 800;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 5px;
         }
 
         .stat-label {
-            font-size: 14px;
+            font-size: 16px;
             color: var(--text-secondary);
-            margin-top: 5px;
+            font-weight: 500;
         }
 
         /* Public Message Form */
         .public-message-form {
             background-color: var(--card-color);
-            border-radius: 15px;
-            padding: 30px;
+            border-radius: 25px;
+            padding: 50px;
             box-shadow: var(--shadow);
-            max-width: 600px;
-            margin: 40px auto;
+            max-width: 700px;
+            margin: 60px auto;
             text-align: center;
+            border: 1px solid rgba(108, 99, 255, 0.1);
+        }
+
+        .public-message-form .panel-title {
+            font-size: 32px;
+            margin-bottom: 30px;
         }
 
         .public-recipient {
-            font-size: 24px;
-            font-weight: 600;
-            color: var(--primary-color);
+            font-size: 32px;
+            font-weight: 700;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 30px;
+            padding: 15px;
+            border-radius: 15px;
+            background-color: var(--background-color);
+            display: inline-block;
+            min-width: 200px;
+            border: 2px dashed rgba(108, 99, 255, 0.3);
+        }
+
+        /* Feature Cards */
+        .features-section {
+            margin-top: 60px;
+            text-align: center;
+        }
+
+        .features-title {
+            font-size: 32px;
+            font-weight: 700;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 50px;
+        }
+
+        .features-container {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .feature-card {
+            flex: 1;
+            min-width: 250px;
+            max-width: 300px;
+            background-color: var(--card-color);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(108, 99, 255, 0.1);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-hover);
+            border: 1px solid rgba(108, 99, 255, 0.2);
+        }
+
+        .feature-icon {
+            font-size: 48px;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             margin-bottom: 20px;
+        }
+
+        .feature-title {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--text-color);
+        }
+
+        .feature-description {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 80px;
+            padding: 40px 0;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-secondary);
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 20px;
+        }
+
+        .footer-links a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--secondary-color);
         }
 
         /* Hidden Elements */
@@ -485,11 +683,21 @@
             }
             
             .auth-card {
-                padding: 30px 20px;
+                padding: 40px 30px;
             }
             
             .stats-container {
                 flex-direction: column;
+            }
+            
+            .features-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .footer-links {
+                flex-direction: column;
+                gap: 15px;
             }
         }
 
@@ -511,15 +719,7 @@
 
         /* Glow Effect */
         .glow {
-            box-shadow: 0 0 15px rgba(108, 99, 255, 0.6);
-        }
-
-        /* Gradient Text */
-        .gradient-text {
-            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            box-shadow: 0 0 20px rgba(108, 99, 255, 0.6);
         }
     </style>
 </head>
@@ -572,7 +772,7 @@
                     </button>
                 </form>
                 
-                <div style="text-align: center; margin-top: 20px;">
+                <div style="text-align: center; margin-top: 30px;">
                     <p style="color: var(--text-secondary); font-size: 14px;">
                         By signing up, you agree to our <a href="#" style="color: var(--primary-color);">Terms of Service</a> and <a href="#" style="color: var(--primary-color);">Privacy Policy</a>
                     </p>
@@ -583,7 +783,7 @@
         <!-- Main App View -->
         <div id="app-view" class="container hidden">
             <header>
-                <div class="logo">
+                <div class="logo float">
                     <i class="fas fa-user-secret"></i> An Anonymous
                 </div>
                 <div class="user-info">
@@ -617,15 +817,15 @@
                         <i class="fas fa-paper-plane"></i> Send Message
                     </button>
                     
-                    <div class="form-group" style="margin-top: 30px;">
+                    <div class="form-group" style="margin-top: 40px;">
                         <label>Your Unique Link</label>
-                        <div style="display: flex; gap: 10px;">
+                        <div style="display: flex; gap: 15px;">
                             <input type="text" id="user-link" class="form-control" readonly>
                             <button class="btn btn-secondary" onclick="copyLink()">
                                 <i class="fas fa-copy"></i> Copy
                             </button>
                         </div>
-                        <p style="font-size: 14px; color: var(--text-secondary); margin-top: 8px;">
+                        <p style="font-size: 14px; color: var(--text-secondary); margin-top: 10px;">
                             Share this link with others to receive anonymous messages
                         </p>
                     </div>
@@ -668,10 +868,61 @@
                     </div>
                 </div>
             </div>
+            
+            <!-- Features Section -->
+            <div class="features-section">
+                <h2 class="features-title">Why Choose An Anonymous?</h2>
+                <div class="features-container">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-user-shield"></i>
+                        </div>
+                        <h3 class="feature-title">100% Anonymous</h3>
+                        <p class="feature-description">
+                            Send messages without revealing your identity. Your privacy is our top priority.
+                        </p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-link"></i>
+                        </div>
+                        <h3 class="feature-title">Shareable Links</h3>
+                        <p class="feature-description">
+                            Get your unique link and share it anywhere for others to send you messages.
+                        </p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        <h3 class="feature-title">Secure & Private</h3>
+                        <p class="feature-description">
+                            Your messages are encrypted and only visible to you.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Footer -->
+            <div class="footer">
+                <div class="footer-links">
+                    <a href="#">About</a>
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Contact</a>
+                </div>
+                <p>&copy; 2023 An Anonymous. All rights reserved.</p>
+            </div>
         </div>
         
         <!-- Public Message Form -->
         <div id="public-message-form" class="public-message-form hidden">
+            <header style="position: static; margin-bottom: 30px; box-shadow: none; border: none;">
+                <div class="logo" style="justify-content: center;">
+                    <i class="fas fa-user-secret"></i> An Anonymous
+                </div>
+            </header>
+            
             <h2 class="panel-title">
                 <i class="fas fa-paper-plane"></i>
                 Send Anonymous Message
@@ -688,10 +939,10 @@
                 <i class="fas fa-paper-plane"></i> Send Message
             </button>
             
-            <div style="margin-top: 30px;">
-                <p style="color: var(--text-secondary); font-size: 14px;">
+            <div style="margin-top: 40px;">
+                <p style="color: var(--text-secondary); font-size: 16px;">
                     Want to receive anonymous messages? 
-                    <a href="#" onclick="showLoginForm()" style="color: var(--primary-color); font-weight: 500;">Create your own link</a>
+                    <a href="#" onclick="showLoginForm()" style="color: var(--primary-color); font-weight: 600;">Create your own link</a>
                 </p>
             </div>
         </div>
@@ -746,19 +997,26 @@
         loginForm.addEventListener('submit', handleLogin);
         registerForm.addEventListener('submit', handleRegister);
         
-        // Function to extract username from URL path
-        function getUsernameFromPath() {
-            // For demo purposes, we'll check both URL parameters and path
-            // In a real application, you would use proper routing
-            
-            // Check for URL parameter first (for backward compatibility)
+        // Function to extract username from URL
+        function getUsernameFromURL() {
+            // Check for URL parameter first
             const urlParams = new URLSearchParams(window.location.search);
             const paramUsername = urlParams.get('sendto');
             if (paramUsername) {
                 return paramUsername;
             }
             
-            // Check for path-based username (e.g., /username)
+            // Check for hash-based username (e.g., #/username)
+            const hash = window.location.hash;
+            if (hash && hash.length > 1) {
+                const hashUsername = hash.substring(1); // Remove the #
+                // Check if it looks like a username
+                if (/^[a-zA-Z0-9_-]+$/.test(hashUsername)) {
+                    return hashUsername;
+                }
+            }
+            
+            // Try to extract from path (for GitHub Pages custom 404 page)
             const pathParts = window.location.pathname.split('/');
             // Remove empty parts and index.html if present
             const cleanParts = pathParts.filter(part => part && part !== 'index.html');
@@ -773,6 +1031,25 @@
             }
             
             return null;
+        }
+        
+        // Function to get or create a user by username
+        function getOrCreateUser(username) {
+            // Check if user already exists
+            let user = mockUsers.find(u => u.username === username);
+            
+            // If user doesn't exist, create a placeholder user
+            if (!user) {
+                user = {
+                    id: mockUsers.length + 1,
+                    username: username,
+                    email: `${username}@example.com`,
+                    password: 'password123'
+                };
+                mockUsers.push(user);
+            }
+            
+            return user;
         }
         
         // Check URL parameters on page load
@@ -793,26 +1070,14 @@
             }
             
             // Get username from URL
-            const recipient = getUsernameFromPath();
+            const recipient = getUsernameFromURL();
             
             if (recipient) {
-                // Check if recipient exists
-                const userExists = mockUsers.some(u => u.username === recipient);
-                
-                if (userExists) {
-                    if (!currentUser) {
-                        // Show public message form
-                        authView.classList.add('hidden');
-                        appView.classList.add('hidden');
-                        publicMessageForm.classList.remove('hidden');
-                        document.getElementById('public-recipient').textContent = recipient;
-                    } else {
-                        // If user is logged in, prefill the recipient field
-                        document.getElementById('recipient').value = recipient;
-                    }
-                } else {
-                    showNotification('User not found', 'error');
-                }
+                // Always show the public message form, regardless of whether the user exists
+                authView.classList.add('hidden');
+                appView.classList.add('hidden');
+                publicMessageForm.classList.remove('hidden');
+                document.getElementById('public-recipient').textContent = recipient;
             }
         });
         
@@ -905,7 +1170,7 @@
             document.getElementById('user-avatar').textContent = currentUser.username.charAt(0).toUpperCase();
             
             // Generate and display user link with proper format
-            const userLink = `${siteConfig.baseUrl}/${currentUser.username}`;
+            const userLink = `${siteConfig.baseUrl}/?sendto=${currentUser.username}`;
             document.getElementById('user-link').value = userLink;
         }
         
@@ -938,13 +1203,8 @@
                 return;
             }
             
-            // Find recipient
-            const recipient = mockUsers.find(u => u.username === recipientUsername);
-            
-            if (!recipient) {
-                showNotification('User not found', 'error');
-                return;
-            }
+            // Get or create recipient
+            const recipient = getOrCreateUser(recipientUsername);
             
             // Create new message
             const newMessage = {
@@ -990,13 +1250,8 @@
                 return;
             }
             
-            // Find recipient
-            const recipient = mockUsers.find(u => u.username === recipientUsername);
-            
-            if (!recipient) {
-                showNotification('User not found', 'error');
-                return;
-            }
+            // Get or create recipient
+            const recipient = getOrCreateUser(recipientUsername);
             
             // Create new message (anonymous)
             const newMessage = {
@@ -1124,7 +1379,7 @@
             const buttons = document.querySelectorAll('.btn');
             buttons.forEach(button => {
                 button.addEventListener('mouseenter', () => {
-                    button.style.transform = 'translateY(-2px)';
+                    button.style.transform = 'translateY(-3px)';
                 });
                 
                 button.addEventListener('mouseleave', () => {
