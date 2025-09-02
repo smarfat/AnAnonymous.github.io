@@ -1,4 +1,3 @@
-
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -912,7 +911,7 @@
                     <a href="#">Terms of Service</a>
                     <a href="#">Contact</a>
                 </div>
-                <p>&copy; 2025 All rights reserved by <b>S. M. Arfatur Rahman</b></p>
+                <p>&copy; 2023 An Anonymous. All rights reserved.</p>
             </div>
         </div>
         
@@ -1014,29 +1013,11 @@
             localStorage.setItem('anonyStats', JSON.stringify(data.stats));
         }
         
-        // Save current user to localStorage
-        function saveCurrentUser(user) {
-            if (user) {
-                localStorage.setItem('anonyCurrentUser', JSON.stringify(user));
-            } else {
-                localStorage.removeItem('anonyCurrentUser');
-            }
-        }
-        
-        // Get current user from localStorage
-        function getCurrentUser() {
-            const userJson = localStorage.getItem('anonyCurrentUser');
-            if (userJson) {
-                return JSON.parse(userJson);
-            }
-            return null;
-        }
-        
         // Initialize app data
         let appData = initializeData();
         
         // Current user state
-        let currentUser = getCurrentUser();
+        let currentUser = null;
         
         // DOM elements
         const authView = document.getElementById('auth-view');
@@ -1124,35 +1105,15 @@
                 authTitle.innerHTML = `<i class="fas fa-user-secret"></i> ${siteConfig.name}`;
             }
             
-            // Check if user is already logged in
-            if (currentUser) {
-                // Verify that the user still exists in the database
-                const userExists = appData.users.some(u => u.id === currentUser.id);
-                if (userExists) {
-                    // User exists, show app view
-                    showAppView();
-                    loadMessages();
-                    updateStats();
-                } else {
-                    // User no longer exists, clear current user and show auth view
-                    currentUser = null;
-                    saveCurrentUser(null);
-                    authView.classList.remove('hidden');
-                }
-            } else {
-                // Check if there's a username in the URL
-                const recipient = getUsernameFromURL();
-                
-                if (recipient) {
-                    // Show the public message form
-                    authView.classList.add('hidden');
-                    appView.classList.add('hidden');
-                    publicMessageForm.classList.remove('hidden');
-                    document.getElementById('public-recipient').textContent = recipient;
-                } else {
-                    // Show the auth view
-                    authView.classList.remove('hidden');
-                }
+            // Get username from URL
+            const recipient = getUsernameFromURL();
+            
+            if (recipient) {
+                // Always show the public message form, regardless of whether the user exists
+                authView.classList.add('hidden');
+                appView.classList.add('hidden');
+                publicMessageForm.classList.remove('hidden');
+                document.getElementById('public-recipient').textContent = recipient;
             }
         });
         
@@ -1180,12 +1141,15 @@
             const email = document.getElementById('login-email').value;
             const password = document.getElementById('login-password').value;
             
+            console.log("Login attempt with:", email, password);
+            console.log("Available users:", appData.users);
+            
             // Find user in database
             const user = appData.users.find(u => u.email === email && u.password === password);
             
             if (user) {
+                console.log("User found:", user);
                 currentUser = user;
-                saveCurrentUser(currentUser);
                 showNotification('Login successful!', 'success');
                 showAppView();
                 loadMessages();
@@ -1198,6 +1162,7 @@
                     sessionStorage.removeItem('recipient');
                 }
             } else {
+                console.log("User not found");
                 showNotification('Invalid email or password', 'error');
             }
         }
@@ -1229,7 +1194,6 @@
             appData.users.push(newUser);
             saveData(appData);
             currentUser = newUser;
-            saveCurrentUser(currentUser);
             
             showNotification('Registration successful!', 'success');
             showAppView();
@@ -1239,6 +1203,7 @@
         
         // Show app view after login
         function showAppView() {
+            console.log("Showing app view for user:", currentUser);
             authView.classList.add('hidden');
             publicMessageForm.classList.add('hidden');
             appView.classList.remove('hidden');
@@ -1250,12 +1215,13 @@
             // Generate and display user link with proper format
             const userLink = `${siteConfig.baseUrl}/?sendto=${currentUser.username}`;
             document.getElementById('user-link').value = userLink;
+            
+            console.log("App view should now be visible");
         }
         
         // Logout function
         function logout() {
             currentUser = null;
-            saveCurrentUser(null);
             appView.classList.add('hidden');
             authView.classList.remove('hidden');
             
@@ -1361,13 +1327,20 @@
         
         // Load messages for current user
         function loadMessages() {
-            if (!currentUser) return;
+            if (!currentUser) {
+                console.log("No current user to load messages for");
+                return;
+            }
+            
+            console.log("Loading messages for user:", currentUser.username);
             
             const messageList = document.getElementById('message-list');
             messageList.innerHTML = '';
             
             // Get messages for current user
             const userMessages = appData.messages.filter(m => m.recipientId === currentUser.id);
+            
+            console.log("Found messages:", userMessages);
             
             if (userMessages.length === 0) {
                 messageList.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">No messages yet.</p>';
