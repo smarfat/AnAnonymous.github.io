@@ -1,3 +1,4 @@
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -961,25 +962,60 @@
             baseUrl: "https://smarfat.github.io/AnAnonymous.github.io"
         };
         
-        // Mock database for demo purposes
-        const mockUsers = [
-            { id: 1, username: 'demo', email: 'demo@example.com', password: 'password123' },
-            { id: 2, username: 'user1', email: 'user1@example.com', password: 'password123' },
-            { id: 3, username: 'user2', email: 'user2@example.com', password: 'password123' }
-        ];
+        // Initialize data from localStorage or use defaults
+        function initializeData() {
+            // Check if users data exists in localStorage
+            let users = JSON.parse(localStorage.getItem('anonyUsers'));
+            if (!users) {
+                // Default users if none exist in localStorage
+                users = [
+                    { id: 1, username: 'demo', email: 'demo@example.com', password: 'password123' },
+                    { id: 2, username: 'user1', email: 'user1@example.com', password: 'password123' },
+                    { id: 3, username: 'user2', email: 'user2@example.com', password: 'password123' }
+                ];
+                localStorage.setItem('anonyUsers', JSON.stringify(users));
+            }
+            
+            // Check if messages data exists in localStorage
+            let messages = JSON.parse(localStorage.getItem('anonyMessages'));
+            if (!messages) {
+                // Default messages if none exist in localStorage
+                messages = [
+                    { id: 1, senderId: 2, recipientId: 1, content: 'This is a test message from user1 to demo', timestamp: new Date().toISOString() },
+                    { id: 2, senderId: null, recipientId: 1, content: 'This is an anonymous message', timestamp: new Date().toISOString() },
+                    { id: 3, senderId: 3, recipientId: 1, content: 'This is another message from user2', timestamp: new Date().toISOString() }
+                ];
+                localStorage.setItem('anonyMessages', JSON.stringify(messages));
+            }
+            
+            // Check if stats data exists in localStorage
+            let stats = JSON.parse(localStorage.getItem('anonyStats'));
+            if (!stats) {
+                // Default stats if none exist in localStorage
+                stats = {
+                    messagesReceived: 24,
+                    messagesSent: 18,
+                    profileViews: 142
+                };
+                localStorage.setItem('anonyStats', JSON.stringify(stats));
+            }
+            
+            return {
+                users: users,
+                messages: messages,
+                stats: stats
+            };
+        }
         
-        const mockMessages = [
-            { id: 1, senderId: 2, recipientId: 1, content: 'This is a test message from user1 to demo', timestamp: new Date().toISOString() },
-            { id: 2, senderId: null, recipientId: 1, content: 'This is an anonymous message', timestamp: new Date().toISOString() },
-            { id: 3, senderId: 3, recipientId: 1, content: 'This is another message from user2', timestamp: new Date().toISOString() }
-        ];
+        // Save data to localStorage
+        function saveData(data) {
+            localStorage.setItem('anonyUsers', JSON.stringify(data.users));
+            localStorage.setItem('anonyMessages', JSON.stringify(data.messages));
+            localStorage.setItem('anonyStats', JSON.stringify(data.stats));
+        }
         
-        // Mock stats
-        const mockStats = {
-            messagesReceived: 24,
-            messagesSent: 18,
-            profileViews: 142
-        };
+        // Initialize app data
+        let appData = initializeData();
         
         // Current user state
         let currentUser = null;
@@ -1036,17 +1072,18 @@
         // Function to get or create a user by username
         function getOrCreateUser(username) {
             // Check if user already exists
-            let user = mockUsers.find(u => u.username === username);
+            let user = appData.users.find(u => u.username === username);
             
             // If user doesn't exist, create a placeholder user
             if (!user) {
                 user = {
-                    id: mockUsers.length + 1,
+                    id: appData.users.length + 1,
                     username: username,
                     email: `${username}@example.com`,
                     password: 'password123'
                 };
-                mockUsers.push(user);
+                appData.users.push(user);
+                saveData(appData);
             }
             
             return user;
@@ -1105,8 +1142,8 @@
             const email = document.getElementById('login-email').value;
             const password = document.getElementById('login-password').value;
             
-            // Find user in mock database
-            const user = mockUsers.find(u => u.email === email && u.password === password);
+            // Find user in database
+            const user = appData.users.find(u => u.email === email && u.password === password);
             
             if (user) {
                 currentUser = user;
@@ -1135,7 +1172,7 @@
             const password = document.getElementById('register-password').value;
             
             // Check if user already exists
-            const userExists = mockUsers.some(u => u.email === email || u.username === username);
+            const userExists = appData.users.some(u => u.email === email || u.username === username);
             
             if (userExists) {
                 showNotification('User with this email or username already exists', 'error');
@@ -1144,13 +1181,14 @@
             
             // Create new user
             const newUser = {
-                id: mockUsers.length + 1,
+                id: appData.users.length + 1,
                 username,
                 email,
                 password
             };
             
-            mockUsers.push(newUser);
+            appData.users.push(newUser);
+            saveData(appData);
             currentUser = newUser;
             
             showNotification('Registration successful!', 'success');
@@ -1208,17 +1246,19 @@
             
             // Create new message
             const newMessage = {
-                id: mockMessages.length + 1,
+                id: appData.messages.length + 1,
                 senderId: currentUser.id,
                 recipientId: recipient.id,
                 content: messageContent,
                 timestamp: new Date().toISOString()
             };
             
-            mockMessages.push(newMessage);
+            appData.messages.push(newMessage);
+            saveData(appData);
             
             // Update stats
-            mockStats.messagesSent++;
+            appData.stats.messagesSent++;
+            saveData(appData);
             updateStats();
             
             // Clear form
@@ -1255,14 +1295,15 @@
             
             // Create new message (anonymous)
             const newMessage = {
-                id: mockMessages.length + 1,
+                id: appData.messages.length + 1,
                 senderId: null, // null means anonymous
                 recipientId: recipient.id,
                 content: messageContent,
                 timestamp: new Date().toISOString()
             };
             
-            mockMessages.push(newMessage);
+            appData.messages.push(newMessage);
+            saveData(appData);
             
             // Clear form
             document.getElementById('public-message').value = '';
@@ -1285,7 +1326,7 @@
             messageList.innerHTML = '';
             
             // Get messages for current user
-            const userMessages = mockMessages.filter(m => m.recipientId === currentUser.id);
+            const userMessages = appData.messages.filter(m => m.recipientId === currentUser.id);
             
             if (userMessages.length === 0) {
                 messageList.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">No messages yet.</p>';
@@ -1300,7 +1341,7 @@
                 const messageItem = document.createElement('div');
                 messageItem.className = 'message-item';
                 
-                const sender = message.senderId ? mockUsers.find(u => u.id === message.senderId) : null;
+                const sender = message.senderId ? appData.users.find(u => u.id === message.senderId) : null;
                 const senderName = sender ? sender.username : 'Anonymous';
                 
                 const date = new Date(message.timestamp);
@@ -1322,19 +1363,21 @@
             });
             
             // Update messages received stat
-            mockStats.messagesReceived = userMessages.length;
+            appData.stats.messagesReceived = userMessages.length;
+            saveData(appData);
             updateStats();
         }
         
         // Update stats
         function updateStats() {
-            document.getElementById('messages-received').textContent = mockStats.messagesReceived;
-            document.getElementById('messages-sent').textContent = mockStats.messagesSent;
-            document.getElementById('profile-views').textContent = mockStats.profileViews;
+            document.getElementById('messages-received').textContent = appData.stats.messagesReceived;
+            document.getElementById('messages-sent').textContent = appData.stats.messagesSent;
+            document.getElementById('profile-views').textContent = appData.stats.profileViews;
             
             // Simulate profile views increase
             if (Math.random() > 0.7) {
-                mockStats.profileViews++;
+                appData.stats.profileViews++;
+                saveData(appData);
             }
         }
         
