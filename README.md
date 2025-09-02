@@ -140,7 +140,7 @@
             align-items: center;
             gap: 15px;
         }
- 
+
         .user-avatar {
             width: 45px;
             height: 45px;
@@ -912,7 +912,7 @@
                     <a href="#">Terms of Service</a>
                     <a href="#">Contact</a>
                 </div>
-                <p>&copy; 2025 All rights reserved by S. M. Arfatur Rahman</p>
+                <p>&copy; 2023 An Anonymous. All rights reserved.</p>
             </div>
         </div>
         
@@ -1014,11 +1014,29 @@
             localStorage.setItem('anonyStats', JSON.stringify(data.stats));
         }
         
+        // Save current user to localStorage
+        function saveCurrentUser(user) {
+            if (user) {
+                localStorage.setItem('anonyCurrentUser', JSON.stringify(user));
+            } else {
+                localStorage.removeItem('anonyCurrentUser');
+            }
+        }
+        
+        // Get current user from localStorage
+        function getCurrentUser() {
+            const userJson = localStorage.getItem('anonyCurrentUser');
+            if (userJson) {
+                return JSON.parse(userJson);
+            }
+            return null;
+        }
+        
         // Initialize app data
         let appData = initializeData();
         
         // Current user state
-        let currentUser = null;
+        let currentUser = getCurrentUser();
         
         // DOM elements
         const authView = document.getElementById('auth-view');
@@ -1106,15 +1124,35 @@
                 authTitle.innerHTML = `<i class="fas fa-user-secret"></i> ${siteConfig.name}`;
             }
             
-            // Get username from URL
-            const recipient = getUsernameFromURL();
-            
-            if (recipient) {
-                // Always show the public message form, regardless of whether the user exists
-                authView.classList.add('hidden');
-                appView.classList.add('hidden');
-                publicMessageForm.classList.remove('hidden');
-                document.getElementById('public-recipient').textContent = recipient;
+            // Check if user is already logged in
+            if (currentUser) {
+                // Verify that the user still exists in the database
+                const userExists = appData.users.some(u => u.id === currentUser.id);
+                if (userExists) {
+                    // User exists, show app view
+                    showAppView();
+                    loadMessages();
+                    updateStats();
+                } else {
+                    // User no longer exists, clear current user and show auth view
+                    currentUser = null;
+                    saveCurrentUser(null);
+                    authView.classList.remove('hidden');
+                }
+            } else {
+                // Check if there's a username in the URL
+                const recipient = getUsernameFromURL();
+                
+                if (recipient) {
+                    // Show the public message form
+                    authView.classList.add('hidden');
+                    appView.classList.add('hidden');
+                    publicMessageForm.classList.remove('hidden');
+                    document.getElementById('public-recipient').textContent = recipient;
+                } else {
+                    // Show the auth view
+                    authView.classList.remove('hidden');
+                }
             }
         });
         
@@ -1147,6 +1185,7 @@
             
             if (user) {
                 currentUser = user;
+                saveCurrentUser(currentUser);
                 showNotification('Login successful!', 'success');
                 showAppView();
                 loadMessages();
@@ -1190,6 +1229,7 @@
             appData.users.push(newUser);
             saveData(appData);
             currentUser = newUser;
+            saveCurrentUser(currentUser);
             
             showNotification('Registration successful!', 'success');
             showAppView();
@@ -1215,6 +1255,7 @@
         // Logout function
         function logout() {
             currentUser = null;
+            saveCurrentUser(null);
             appView.classList.add('hidden');
             authView.classList.remove('hidden');
             
