@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -784,7 +783,7 @@
 
         <footer>
             <p>Made with <span class="footer-heart"><i class="fas fa-heart"></i></span> by Syed Mohammad Arfatur Rahman for Syeda Komol Hoque Ilma</p>
-            <p>© 2023 Our Love Story | Bridging Distances with Love</p>
+            <p>© 2025 Our Love Story | Bridging Distances with Love</p>
         </footer>
     </div>
 
